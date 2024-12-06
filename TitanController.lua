@@ -1,4 +1,4 @@
-function() game:GetService("ContextActionService"):UnbindAction("VehicleChassisRawInput") end)
+pcall(function() game:GetService("ContextActionService"):UnbindAction("VehicleChassisRawInput") end)
 --[[
 	
 	Gui2Lua Winning! ~ Ch0nky Code:tm:
