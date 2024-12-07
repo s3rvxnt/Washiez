@@ -1,0 +1,37 @@
+---Servant's utilities---
+
+
+-- Wait until the game is fully loaded
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
+
+
+--Service declarations--
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+local Workspace = game:GetService("Workspace")
+
+
+--Custom Functions--
+getgenv().SuperStep = function(payload)
+local Connections = {}
+Connections.Heartbeat = RunService.Heartbeat:Connect(payload)
+Connections.PostSimulation = RunService.PostSimulation:Connect(payload)
+Connections.PreAnimation = RunService.PreAnimation:Connect(payload)
+Connections.PreRender = RunService.PreRender:Connect(payload)
+Connections.PreSimulation = RunService.PreSimulation:Connect(payload)
+Connections.RenderStepped = RunService.RenderStepped:Connect(payload)
+Connections.Stepped = RunService.Stepped:Connect(payload)
+return Connections
+end
+
+getgenv().WashiezGetVehicle = function()
+        for _, vehicle in Workspace.SpawnedCars:GetChildren() do
+            if string.find(vehicle.Name, Player.Name) then
+                return vehicle
+            end
+        end
+        return nil
+end
