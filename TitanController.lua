@@ -1031,7 +1031,7 @@ task.spawn(function()
 end)
 game.Players.LocalPlayer.Character = tbl.Rig
 game:GetService("Workspace").CurrentCamera.CameraSubject = tbl.Humanoid
-tbl.Rig.Name = 'CarTitan'
+pcall(function()tbl.Rig.Name = 'CarTitan'end)
 local HttpService = game:GetService("HttpService")
 for _,part in tbl.Rig:GetDescendants() do 
 	pcall(function()
