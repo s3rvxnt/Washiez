@@ -1033,22 +1033,14 @@ game.Players.LocalPlayer.Character = tbl.Rig
 game:GetService("Workspace").CurrentCamera.CameraSubject = tbl.Humanoid
 tbl.Rig.Name = 'CarTitan'
 local HttpService = game:GetService("HttpService")
-task.spawn(function()
-repeat
-for _,Vehicle in game:GetService("Workspace").SpawnedCars:GetChildren() do 
-        --if not string.find(Vehicle.Name, game.Players.LocalPlayer.Name) then 
-            for _,d in Vehicle:GetDescendants() do 
-                pcall(function()
-                d.CollisionGroup = "Default"
+for _,part in tbl.Rig:GetDescendants() do 
+	pcall(function()
+		d.CollisionGroup = "Default"
                 d.CanCollide = false 
-                end)
-            end
-        --end
-    end
-    task.wait(1)
-until false
-end)
-repeat task.wait()
+        end)
+end
+	
+game:GetService("RunService").Heartbeat:Connect(function()
 local table = {}
 local x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22 = tbl.Head.CFrame:GetComponents()
 table.Head = {x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22}
@@ -1063,4 +1055,4 @@ table.LeftLeg = {x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22}
 local x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22 = tbl.Right_Leg.CFrame:GetComponents()
 table.RightLeg = {x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22}
 writefile("Titan.lua",HttpService:JSONEncode(table))
-until false
+end)
