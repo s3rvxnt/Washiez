@@ -81,7 +81,7 @@ local tbl =
 	Body_Colors = Instance.new("BodyColors")
 }
 
-tbl.Rig.Name = "Rig"
+tbl.Rig.Name = "CarTitan"
 tbl.Rig.PrimaryPart = tbl.Torso
 tbl.Rig.WorldPivot = CFrame.new(0.0139389, -4.23193e-06, 1.30777, 1, 0, 0, 0, 1, 0, 0, 0, 1)
 tbl.Rig.Parent = game:GetService("Workspace")
@@ -1031,7 +1031,6 @@ task.spawn(function()
 end)
 game.Players.LocalPlayer.Character = tbl.Rig
 game:GetService("Workspace").CurrentCamera.CameraSubject = tbl.Humanoid
-pcall(function()tbl.Rig.Name = 'CarTitan'end)
 local HttpService = game:GetService("HttpService")
 for _,part in tbl.Rig:GetDescendants() do 
 	pcall(function()
