@@ -35,3 +35,39 @@ getgenv().WashiezGetVehicle = function()
         end
         return nil
 end
+
+getgenv().WashiezRequestVehicleSpawn = function()
+local Character = Player.Character or Player.CharacterAdded:Wait()
+local originalCFrame = Character.PrimaryPart.CFrame
+-- Find the closest Car Spawner
+            local closestSpawner
+            local closestDistance = math.huge
+            for _, child in Workspace:GetChildren() do
+                if child.Name == "CarSpawner" then
+                    local distance = (game:GetService(Character.PrimaryPart.Position - child.CarSpawner.Screen.Position).Magnitude
+                    if distance < closestDistance then
+                        closestSpawner = child
+                        closestDistance = distance
+                    end
+                end
+            end
+
+            -- Teleport to the closest Car Spawner and activate the prompt
+            if closestSpawner then
+                Character.Animate.Disabled = true
+                Character:PivotTo(closestSpawner.CarSpawner.Screen.CFrame * CFrame.new(0, 5000000, 0))
+                task.wait(Player:GetNetworkPing() + 0.1)
+
+                repeat
+                    task.wait()
+                    Character:PivotTo(closestSpawner.CarSpawner.Screen.CFrame)
+                    fireproximityprompt(closestSpawner.CarSpawner.Screen.CarSystem)
+                until Player.PlayerGui.CarSelection.MainFrame.Position ~= UDim2.new(1.2, 30, 0.5, 0)
+
+                Character.Animate.Disabled = false
+                Character:PivotTo(originalCFrame * CFrame.new(0, 5000000, 0))
+                task.wait(Player:GetNetworkPing() + 0.1)
+                Character:PivotTo(originalCFrame)
+            end
+
+end
