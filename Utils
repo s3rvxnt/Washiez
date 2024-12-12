@@ -66,3 +66,12 @@ getgenv().WashiezRequestVehicleSpawn = function()
         Character:PivotTo(originalCFrame)
     end
 end
+
+getgenv().WashiezSpawnVehicle = function(type)
+    local ohString1 = "Spawn"
+    local ohString2 = type
+    local ohTable3 = {
+	    [1] = false
+    }
+    game:GetService("ReplicatedStorage").CarSpawnSystem.RemoteEvents.CarSystem:InvokeServer(ohString1, ohString2, ohTable3)
+end
