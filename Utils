@@ -51,8 +51,6 @@ getgenv().WashiezRequestVehicleSpawn = function()
     -- Teleport to the closest Car Spawner and activate the prompt
     if closestSpawner then
         Character.Animate.Disabled = true
-        Character:PivotTo(closestSpawner.CarSpawner.Screen.CFrame * CFrame.new(0, 5000000, 0))
-        task.wait(Player:GetNetworkPing() + 0.1)
 
         repeat
             task.wait()
@@ -61,8 +59,6 @@ getgenv().WashiezRequestVehicleSpawn = function()
         until Player.PlayerGui.CarSelection.MainFrame.Position ~= UDim2.new(1.2, 30, 0.5, 0)
 
         Character.Animate.Disabled = false
-        Character:PivotTo(originalCFrame * CFrame.new(0, 5000000, 0))
-        task.wait(Player:GetNetworkPing() + 0.1)
         Character:PivotTo(originalCFrame)
     end
 end
@@ -74,4 +70,22 @@ getgenv().WashiezSpawnVehicle = function(type)
 	    [1] = false
     }
     game:GetService("ReplicatedStorage").CarSpawnSystem.RemoteEvents.CarSystem:InvokeServer(ohString1, ohString2, ohTable3)
+end
+
+getgenv().WashiezEnterDriver = function(Vehicle)
+	local stop = false
+    task.spawn(function()
+        repeat task.wait()
+	pcall(function()
+            Player.Character.PrimaryPart.CFrame = Vehicle.Chassis.VehicleSeat.CFrame * CFrame.new(-5,0,0)
+	end)
+        until not Vehicle:FindFirstChild("BillboardGui")
+	stop = true
+    end)
+	task.wait(Player:GetNetworkPing())
+    repeat task.wait()
+	pcall(function()
+    		fireproximityprompt(Vehicle.Chassis.VehicleSeat.PromptLocation.EndorsedVehicleProximityPromptV1)
+    	end)
+	until stop == true
 end
