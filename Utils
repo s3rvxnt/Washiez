@@ -37,25 +37,25 @@ getgenv().WashiezRequestVehicleSpawn = function()
     local Character = Player.Character or Player.CharacterAdded:Wait()
     local originalCFrame = Character.PrimaryPart.CFrame
     -- Find the closest Car Spawner
-    local closestSpawner
-    local closestDistance = math.huge
+    local furthestSpawner
+    local FurthestDistance = 0
     for _, child in Workspace:GetChildren() do
         if child.Name == "CarSpawner" then
             local distance = (Character.PrimaryPart.Position - child.CarSpawner.Screen.Position).Magnitude
-            if distance < closestDistance then
-                closestSpawner = child
-                closestDistance = distance
+            if distance > FurthestDistance then
+                furthestSpawner = child
+                FurthestDistance = distance
             end
         end
     end
     -- Teleport to the closest Car Spawner and activate the prompt
-    if closestSpawner then
+    if furthestSpawner then
         Character.Animate.Disabled = true
 
         repeat
             task.wait()
-            Character:PivotTo(closestSpawner.CarSpawner.Screen.CFrame)
-            fireproximityprompt(closestSpawner.CarSpawner.Screen.CarSystem)
+            Character:PivotTo(furthestSpawner.CarSpawner.Screen.CFrame)
+            fireproximityprompt(furthestSpawner.CarSpawner.Screen.CarSystem)
         until Player.PlayerGui.CarSelection.MainFrame.Position ~= UDim2.new(1.2, 30, 0.5, 0)
 
         Character.Animate.Disabled = false
@@ -82,10 +82,11 @@ getgenv().WashiezEnterDriver = function(Vehicle)
         until not Vehicle:FindFirstChild("BillboardGui")
 	stop = true
     end)
-	task.wait(Player:GetNetworkPing())
-    repeat task.wait()
+	task.wait(Player:GetNetworkPing()*2)
+    repeat
 	pcall(function()
     		fireproximityprompt(Vehicle.Chassis.VehicleSeat.PromptLocation.EndorsedVehicleProximityPromptV1)
     	end)
+task.wait(0.25)
 	until stop == true
 end
