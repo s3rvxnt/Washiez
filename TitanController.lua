@@ -95,6 +95,7 @@ tbl.Head.BrickColor = BrickColor.new("Sand green")
 tbl.Head.Name = "Head"
 tbl.Head.PivotOffset = CFrame.new(0, -44.4229, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
 tbl.Head.Parent = tbl.Rig
+tbl.Head.CanCollide = false
 
 tbl.Mesh.Scale = Vector3.new(1.25, 1.25, 1.25)
 tbl.Mesh.Parent = tbl.Head
@@ -131,6 +132,7 @@ tbl.Torso.LeftSurface = Enum.SurfaceType.Weld
 tbl.Torso.BrickColor = BrickColor.new("Sand green")
 tbl.Torso.Name = "Torso"
 tbl.Torso.Parent = tbl.Rig
+tbl.Torso.CanCollide = false
 
 tbl.roblox.Name = "roblox"
 tbl.roblox.Parent = tbl.Torso
@@ -284,7 +286,7 @@ tbl.RightFootAttachment.Name = "RightFootAttachment"
 tbl.RightFootAttachment.Parent = tbl.Right_Leg
 
 tbl.Humanoid.JumpHeight = 71.0767
-tbl.Humanoid.WalkSpeed = 157.948
+tbl.Humanoid.WalkSpeed = 100
 tbl.Humanoid.NameDisplayDistance = 987.176
 tbl.Humanoid.JumpPower = 157.097
 tbl.Humanoid.HealthDisplayDistance = 987.176
