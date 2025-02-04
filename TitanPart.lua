@@ -1,6 +1,6 @@
 local Mode = getgenv().Mode
 local Player = game:GetService("Players").LocalPlayer
-
+loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/Utils"))()
 local LimbOffsets = {
     Head = CFrame.Angles(-1.6,0,3.1) * CFrame.new(0,-3,-7),
     TorsoLeft = CFrame.Angles(-1.6,0,0) * CFrame.new(-5,-3,-3),
@@ -11,16 +11,27 @@ local LimbOffsets = {
     LeftLeg = CFrame.Angles(-1.6,0,0) * CFrame.new(0,-3,-1.5)
 }
 
-local function GetVehicle()
-    for _,Vehicle in game:GetService("Workspace").SpawnedCars:GetChildren() do 
-        if string.find(Vehicle.Name, Player.Name) then 
-            return Vehicle
+local Vehicle = getgenv().WashiezGetVehicle()
+if Vehicle == nil then
+    repeat
+        Player.PlayerGui.CarSelection.MainFrame.Visible = false
+        local SCRIPT = Player.PlayerGui.CarSelection.Manager
+        local environment = getsenv(SCRIPT)
+        environment.closeMenu()
+        task.wait(1)
+        Player.Character.Humanoid.Sit = false
+        getgenv().WashiezRequestVehicleSpawn()
+        getgenv().WashiezSpawnVehicle("Van")
+        local stop = false
+        task.delay(Player:GetNetworkPing() + 2, function() stop = true end)
+        repeat task.wait()
+            Vehicle = getgenv().WashiezGetVehicle()
+        until Vehicle ~= nil or stop == true
+        if Vehicle ~= nil then
+            Vehicle:WaitForChild("Chassis"):WaitForChild("VehicleSeat"):Sit(Player.Character.Humanoid)
         end
-    end
-    
-    return nil
+    until Vehicle ~= nil
 end
-local Vehicle = GetVehicle()
 
 game:GetService("Workspace").DescendantAdded:Connect(function(obj)
     pcall(function()
