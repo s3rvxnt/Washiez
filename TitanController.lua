@@ -1,5 +1,25 @@
-getgenv().Mode = "Head" -- Head, TorsoLeft, TorsoRight, LeftArm, RightArm, LeftLeg, RightLeg
-loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/TitanPart.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/Utils"))()
+local Vehicle = getgenv().WashiezGetVehicle()
+if Vehicle == nil then
+    repeat
+        Player.PlayerGui.CarSelection.MainFrame.Visible = false
+        local SCRIPT = Player.PlayerGui.CarSelection.Manager
+        local environment = getsenv(SCRIPT)
+        environment.closeMenu()
+        task.wait(1)
+        Player.Character.Humanoid.Sit = false
+        getgenv().WashiezRequestVehicleSpawn()
+        getgenv().WashiezSpawnVehicle("Van")
+        local stop = false
+        task.delay(Player:GetNetworkPing() + 2, function() stop = true end)
+        repeat task.wait()
+            Vehicle = getgenv().WashiezGetVehicle()
+        until Vehicle ~= nil or stop == true
+        if Vehicle ~= nil then
+            Vehicle:WaitForChild("Chassis"):WaitForChild("VehicleSeat"):Sit(Player.Character.Humanoid)
+        end
+    until Vehicle ~= nil
+end
 pcall(function() game:GetService("ContextActionService"):UnbindAction("VehicleChassisRawInput") end)
 --[[
 	
@@ -1059,3 +1079,5 @@ local x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22 = tbl.Right_Leg.CFram
 table.RightLeg = {x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22}
 writefile("Titan.lua",HttpService:JSONEncode(table))
 end)
+getgenv().Mode = "Head" -- Head, TorsoLeft, TorsoRight, LeftArm, RightArm, LeftLeg, RightLeg
+loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/TitanPart.lua"))()
