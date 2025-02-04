@@ -1,3 +1,5 @@
+getgenv().Mode = "Head" -- Head, TorsoLeft, TorsoRight, LeftArm, RightArm, LeftLeg, RightLeg
+loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/TitanPart.lua"))()
 pcall(function() game:GetService("ContextActionService"):UnbindAction("VehicleChassisRawInput") end)
 --[[
 	
@@ -1057,5 +1059,3 @@ local x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22 = tbl.Right_Leg.CFram
 table.RightLeg = {x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22}
 writefile("Titan.lua",HttpService:JSONEncode(table))
 end)
-getgenv().Mode = "Head" -- Head, TorsoLeft, TorsoRight, LeftArm, RightArm, LeftLeg, RightLeg
-loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/TitanPart.lua"))()
