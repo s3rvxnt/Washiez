@@ -2,7 +2,7 @@ local Mode = getgenv().Mode
 local Player = game:GetService("Players").LocalPlayer
 loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/Utils"))()
 local LimbOffsets = {
-    Head = CFrame.Angles(-1.6,0,3.1) * CFrame.new(0,-7,-7),
+    Head = CFrame.Angles(-1.6,0,3.1) * CFrame.new(0,-5,-7),
     TorsoLeft = CFrame.Angles(-1.6,0,0) * CFrame.new(-5,-3,-3),
     TorsoRight = CFrame.Angles(-1.6,0,0) * CFrame.new(5,-3,-3),
     RightArm = CFrame.Angles(-1.6,0,0) * CFrame.new(0,-3,-3),
