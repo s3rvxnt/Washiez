@@ -2,21 +2,21 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/
 local Vehicle = getgenv().WashiezGetVehicle()
 if Vehicle == nil then
     repeat
-        Player.PlayerGui.CarSelection.MainFrame.Visible = false
-        local SCRIPT = Player.PlayerGui.CarSelection.Manager
+        game.Players.LocalPlayer.PlayerGui.CarSelection.MainFrame.Visible = false
+        local SCRIPT = game.Players.LocalPlayer.PlayerGui.CarSelection.Manager
         local environment = getsenv(SCRIPT)
         environment.closeMenu()
         task.wait(1)
-        Player.Character.Humanoid.Sit = false
+        game.Players.LocalPlayer.Character.Humanoid.Sit = false
         getgenv().WashiezRequestVehicleSpawn()
         getgenv().WashiezSpawnVehicle("Van")
         local stop = false
-        task.delay(Player:GetNetworkPing() + 2, function() stop = true end)
+        task.delay(game.Players.LocalPlayer:GetNetworkPing() + 2, function() stop = true end)
         repeat task.wait()
             Vehicle = getgenv().WashiezGetVehicle()
         until Vehicle ~= nil or stop == true
         if Vehicle ~= nil then
-            Vehicle:WaitForChild("Chassis"):WaitForChild("VehicleSeat"):Sit(Player.Character.Humanoid)
+            Vehicle:WaitForChild("Chassis"):WaitForChild("VehicleSeat"):Sit(game.Players.LocalPlayer.Character.Humanoid)
         end
     until Vehicle ~= nil
 end
