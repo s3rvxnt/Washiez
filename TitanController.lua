@@ -117,7 +117,7 @@ tbl.Head.BrickColor = BrickColor.new("Sand green")
 tbl.Head.Name = "Head"
 tbl.Head.PivotOffset = CFrame.new(0, -44.4229, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
 tbl.Head.Parent = tbl.Rig
-tbl.Head.CanCollide = false
+tbl.Head.CanCollide = true
 
 tbl.Mesh.Scale = Vector3.new(1.25, 1.25, 1.25)
 tbl.Mesh.Parent = tbl.Head
@@ -154,7 +154,7 @@ tbl.Torso.LeftSurface = Enum.SurfaceType.Weld
 tbl.Torso.BrickColor = BrickColor.new("Sand green")
 tbl.Torso.Name = "Torso"
 tbl.Torso.Parent = tbl.Rig
-tbl.Torso.CanCollide = false
+tbl.Torso.CanCollide = true
 
 tbl.roblox.Name = "roblox"
 tbl.roblox.Parent = tbl.Torso
@@ -240,7 +240,7 @@ tbl.Neck.Part0 = tbl.Torso
 tbl.Neck.Parent = tbl.Torso
 
 tbl.Left_Arm.CFrame = CFrame.new(-14.7937, 29.6153, 1.30777, 1, 0, 0, 0, 1, 0, 0, 0, 1)
-tbl.Left_Arm.CanCollide = false
+tbl.Left_Arm.CanCollide = true
 tbl.Left_Arm.Transparency = 0.65
 tbl.Left_Arm.Color = Color3.fromRGB(127, 127, 127)
 tbl.Left_Arm.Size = Vector3.new(9.87176, 19.7435, 9.87176)
@@ -259,7 +259,7 @@ tbl.LeftGripAttachment.Name = "LeftGripAttachment"
 tbl.LeftGripAttachment.Parent = tbl.Left_Arm
 
 tbl.Right_Arm.CFrame = CFrame.new(14.8216, 29.6153, 1.30777, 1, 0, 0, 0, 1, 0, 0, 0, 1)
-tbl.Right_Arm.CanCollide = false
+tbl.Right_Arm.CanCollide = true
 tbl.Right_Arm.Transparency = 0.65
 tbl.Right_Arm.Color = Color3.fromRGB(127, 127, 127)
 tbl.Right_Arm.Size = Vector3.new(9.87176, 19.7435, 9.87176)
@@ -279,7 +279,7 @@ tbl.RightGripAttachment.Parent = tbl.Right_Arm
 
 tbl.Left_Leg.CFrame = CFrame.new(-4.92194, 9.87176, 1.30777, 1, 0, 0, 0, 1, 0, 0, 0, 1)
 tbl.Left_Leg.BottomSurface = Enum.SurfaceType.Smooth
-tbl.Left_Leg.CanCollide = false
+tbl.Left_Leg.CanCollide = true
 tbl.Left_Leg.Transparency = 0.65
 tbl.Left_Leg.Color = Color3.fromRGB(127, 127, 127)
 tbl.Left_Leg.Size = Vector3.new(9.87176, 19.7435, 9.87176)
@@ -294,7 +294,7 @@ tbl.LeftFootAttachment.Parent = tbl.Left_Leg
 
 tbl.Right_Leg.CFrame = CFrame.new(4.94982, 9.87176, 1.30777, 1, 0, 0, 0, 1, 0, 0, 0, 1)
 tbl.Right_Leg.BottomSurface = Enum.SurfaceType.Smooth
-tbl.Right_Leg.CanCollide = false
+tbl.Right_Leg.CanCollide = true
 tbl.Right_Leg.Transparency = 0.65
 tbl.Right_Leg.Color = Color3.fromRGB(127, 127, 127)
 tbl.Right_Leg.Size = Vector3.new(9.87176, 19.7435, 9.87176)
@@ -351,7 +351,7 @@ tbl.BodyPartDescription_5.Parent = tbl.HumanoidDescription
 
 tbl.HumanoidRootPart.CFrame = CFrame.new(0.0139389, 29.6153, 1.30777, 1, 0, 0, 0, 1, 0, 0, 0, 1)
 tbl.HumanoidRootPart.BottomSurface = Enum.SurfaceType.Smooth
-tbl.HumanoidRootPart.CanCollide = false
+tbl.HumanoidRootPart.CanCollide = true
 tbl.HumanoidRootPart.Transparency = 0.65
 tbl.HumanoidRootPart.TopSurface = Enum.SurfaceType.Smooth
 tbl.HumanoidRootPart.Size = Vector3.new(19.7435, 19.7435, 9.87176)
@@ -1056,13 +1056,23 @@ end)
 game.Players.LocalPlayer.Character = tbl.Rig
 game:GetService("Workspace").CurrentCamera.CameraSubject = tbl.Humanoid
 local HttpService = game:GetService("HttpService")
-for _,part in tbl.Rig:GetDescendants() do 
+
+for i,v in game:GetService("Workspace"):WaitForChild("SpawnedCars"):GetDescendants() do
 	pcall(function()
-		d.CollisionGroup = "Default"
-                d.CanCollide = false 
-        end)
+	v.CollisionGroup = "Default"
+	v.CanCollide = false
+	end)
 end
-	
+task.spawn(function()
+	repeat task.wait(2)
+for i,v in game:GetService("Workspace"):WaitForChild("SpawnedCars"):GetDescendants() do
+	pcall(function()
+	v.CollisionGroup = "Default"
+	v.CanCollide = false
+	end)
+end
+			until false
+end)
 game:GetService("RunService").Heartbeat:Connect(function()
 local table = {}
 local x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22 = tbl.Head.CFrame:GetComponents()
