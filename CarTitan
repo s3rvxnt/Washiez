@@ -1,0 +1,399 @@
+--Declarations--
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+local HttpService = game:GetService("HttpService")
+
+--Load in account
+local success,err = pcall(function()
+    readfile("CarTitanLoader.json")
+end)
+if not success then
+    local Accounts = {}
+    writefile("CarTitanLoader.json",HttpService:JSONEncode(Accounts))
+    task.wait(1)
+end
+local Accounts = readfile("CarTitanLoader.json")
+local Accounts = HttpService:JSONDecode(Accounts)
+local AccountsUpdated = {}
+for index,account in Accounts do
+    if Players:FindFirstChild(account[1]) and account[1] ~= Player.Name and tonumber(account[2][1]) > tick()-5 then
+        table.insert(AccountsUpdated,account)
+    end
+end
+if #AccountsUpdated <= 7 then
+    table.insert(AccountsUpdated,{Player.Name,{tick(),''},false})
+    writefile("CarTitanLoader.json",HttpService:JSONEncode(AccountsUpdated))
+    --[[
+        
+        Gui2Lua Winning! ~ Ch0nky Code:tm:
+        
+        15 instances
+        
+        -> shared.gv2.require("main").printChangelogs()
+        
+    ]]--
+
+    local tbl =
+    {
+        CarTitanLoader = Instance.new("ScreenGui"),
+        MainWindow = Instance.new("Frame"),
+        Title = Instance.new("TextLabel"),
+        LoadedAccounts = Instance.new("ScrollingFrame"),
+        UIStroke = Instance.new("UIStroke"),
+        UIListLayout = Instance.new("UIListLayout"),
+        Template = Instance.new("TextLabel"),
+        ControlPanel = Instance.new("Frame"),
+        UIStroke_1 = Instance.new("UIStroke"),
+        Status = Instance.new("TextLabel"),
+        ClaimOwner = Instance.new("TextButton"),
+        UICorner = Instance.new("UICorner"),
+        UIStroke_2 = Instance.new("UIStroke"),
+        ClaimDetails = Instance.new("TextLabel"),
+        UIStroke_3 = Instance.new("UIStroke")
+    }
+
+    tbl.CarTitanLoader.Name = "CarTitanLoader"
+    tbl.CarTitanLoader.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    tbl.CarTitanLoader.Parent = Player.PlayerGui
+
+    tbl.MainWindow.BorderSizePixel = 0
+    tbl.MainWindow.BackgroundColor3 = Color3.fromRGB(39, 39, 39)
+    tbl.MainWindow.AnchorPoint = Vector2.new(0.5, 0.5)
+    tbl.MainWindow.Size = UDim2.new(0.571131, 0, 0.584259, 0)
+    tbl.MainWindow.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    tbl.MainWindow.Name = "MainWindow"
+    tbl.MainWindow.Position = UDim2.new(0.5, 0, 0.5, 0)
+    tbl.MainWindow.Parent = tbl.CarTitanLoader
+    local Drag = tbl.MainWindow
+    gsCoreGui = game:GetService("CoreGui")
+    gsTween = game:GetService("TweenService")
+    local UserInputService = game:GetService("UserInputService")
+	local dragging
+	local dragInput
+	local dragStart
+	local startPos
+	local function update(input)
+		local delta = input.Position - dragStart
+		local dragTime = 0.04
+		local SmoothDrag = {}
+		SmoothDrag.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+		local dragSmoothFunction = gsTween:Create(Drag, TweenInfo.new(dragTime, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), SmoothDrag)
+		dragSmoothFunction:Play()
+	end
+	Drag.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			dragging = true
+			dragStart = input.Position
+			startPos = Drag.Position
+			input.Changed:Connect(function()
+				if input.UserInputState == Enum.UserInputState.End then
+					dragging = false
+				end
+			end)
+		end
+	end)
+	Drag.InputChanged:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+			dragInput = input
+		end
+	end)
+	UserInputService.InputChanged:Connect(function(input)
+		if input == dragInput and dragging and Drag.Size then
+			update(input)
+		end
+	end)
+
+    tbl.Title.TextWrapped = true
+    tbl.Title.BorderSizePixel = 0
+    tbl.Title.TextScaled = true
+    tbl.Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    tbl.Title.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+    tbl.Title.Position = UDim2.new(0.5, 0, 0.0158479, 0)
+    tbl.Title.Name = "Title"
+    tbl.Title.AnchorPoint = Vector2.new(0.5, 0)
+    tbl.Title.TextSize = 35
+    tbl.Title.Size = UDim2.new(0.501825, 0, 0.0839937, 0)
+    tbl.Title.TextColor3 = Color3.fromRGB(143, 143, 143)
+    tbl.Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    tbl.Title.Text = "Car Titan Loader"
+    tbl.Title.BackgroundTransparency = 1
+    tbl.Title.Parent = tbl.MainWindow
+
+    tbl.LoadedAccounts.BorderSizePixel = 0
+    tbl.LoadedAccounts.CanvasSize = UDim2.new(0, 0, 0, 0)
+    tbl.LoadedAccounts.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    tbl.LoadedAccounts.AutomaticCanvasSize = Enum.AutomaticSize.Y
+    tbl.LoadedAccounts.Size = UDim2.new(0.333942, 0, 0.784469, 0)
+    tbl.LoadedAccounts.ScrollBarImageColor3 = Color3.fromRGB(0, 0, 0)
+    tbl.LoadedAccounts.Active = true
+    tbl.LoadedAccounts.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    tbl.LoadedAccounts.Name = "LoadedAccounts"
+    tbl.LoadedAccounts.Position = UDim2.new(0.0381055, 0, 0.150555, 0)
+    tbl.LoadedAccounts.Parent = tbl.MainWindow
+
+    tbl.UIStroke.Color = Color3.fromRGB(143, 143, 143)
+    tbl.UIStroke.Thickness = 4
+    tbl.UIStroke.LineJoinMode = Enum.LineJoinMode.Bevel
+    tbl.UIStroke.Parent = tbl.LoadedAccounts
+
+    tbl.UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+    tbl.UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    tbl.UIListLayout.Parent = tbl.LoadedAccounts
+
+    tbl.Template.TextWrapped = true
+    tbl.Template.BorderSizePixel = 0
+    tbl.Template.TextScaled = true
+    tbl.Template.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    tbl.Template.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+    tbl.Template.Name = "Template"
+    tbl.Template.AnchorPoint = Vector2.new(0.5, 0.5)
+    tbl.Template.TextSize = 14
+    tbl.Template.Size = UDim2.new(0.9, 0, 0, 80)
+    tbl.Template.TextColor3 = Color3.fromRGB(143, 143, 143)
+    tbl.Template.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    tbl.Template.Text = "TestAccount123"
+    tbl.Template.Visible = false
+    tbl.Template.BackgroundTransparency = 1
+    tbl.Template.Parent = tbl.LoadedAccounts
+
+    tbl.ControlPanel.BorderSizePixel = 0
+    tbl.ControlPanel.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    tbl.ControlPanel.Size = UDim2.new(0.55292, 0, 0.784469, 0)
+    tbl.ControlPanel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    tbl.ControlPanel.Name = "ControlPanel"
+    tbl.ControlPanel.Position = UDim2.new(0.408759, 0, 0.149876, 0)
+    tbl.ControlPanel.Parent = tbl.MainWindow
+
+    tbl.UIStroke_1.Color = Color3.fromRGB(143, 143, 143)
+    tbl.UIStroke_1.Thickness = 4
+    tbl.UIStroke_1.LineJoinMode = Enum.LineJoinMode.Bevel
+    tbl.UIStroke_1.Parent = tbl.ControlPanel
+
+    tbl.Status.TextWrapped = true
+    tbl.Status.BorderSizePixel = 0
+    tbl.Status.TextScaled = true
+    tbl.Status.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    tbl.Status.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+    tbl.Status.Position = UDim2.new(0.5, 0, 0.5, 0)
+    tbl.Status.Name = "Status"
+    tbl.Status.AnchorPoint = Vector2.new(0.5, 0.5)
+    tbl.Status.TextSize = 14
+    tbl.Status.Size = UDim2.new(0.630363, 0, 0.10101, 0)
+    tbl.Status.TextColor3 = Color3.fromRGB(143, 143, 143)
+    tbl.Status.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    tbl.Status.Text = "1 out of 7 accounts loaded"
+    tbl.Status.BackgroundTransparency = 1
+    tbl.Status.Parent = tbl.ControlPanel
+
+    tbl.ClaimOwner.Visible = false
+    tbl.ClaimOwner.TextWrapped = true
+    tbl.ClaimOwner.BorderSizePixel = 0
+    tbl.ClaimOwner.Position = UDim2.new(0.5, 0, 0.5, 0)
+    tbl.ClaimOwner.TextScaled = true
+    tbl.ClaimOwner.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    tbl.ClaimOwner.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+    tbl.ClaimOwner.Name = "ClaimOwner"
+    tbl.ClaimOwner.AnchorPoint = Vector2.new(0.5, 0.5)
+    tbl.ClaimOwner.TextSize = 14
+    tbl.ClaimOwner.Size = UDim2.new(0.580858, 0, 0.179798, 0)
+    tbl.ClaimOwner.TextColor3 = Color3.fromRGB(143, 143, 143)
+    tbl.ClaimOwner.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    tbl.ClaimOwner.Text = "Claim"
+    tbl.ClaimOwner.BackgroundTransparency = 1
+    tbl.ClaimOwner.Parent = tbl.ControlPanel
+
+    tbl.UICorner.Parent = tbl.ClaimOwner
+
+    tbl.UIStroke_2.Color = Color3.fromRGB(143, 143, 143)
+    tbl.UIStroke_2.Thickness = 4
+    tbl.UIStroke_2.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    tbl.UIStroke_2.Parent = tbl.ClaimOwner
+
+    tbl.ClaimDetails.TextWrapped = true
+    tbl.ClaimDetails.BorderSizePixel = 0
+    tbl.ClaimDetails.TextScaled = true
+    tbl.ClaimDetails.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    tbl.ClaimDetails.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+    tbl.ClaimDetails.Position = UDim2.new(0.499967, 0, 0.266085, 0)
+    tbl.ClaimDetails.Name = "ClaimDetails"
+    tbl.ClaimDetails.AnchorPoint = Vector2.new(0.5, 0.5)
+    tbl.ClaimDetails.TextSize = 14
+    tbl.ClaimDetails.Size = UDim2.new(0.772, 0, 0.18, 0)
+    tbl.ClaimDetails.TextColor3 = Color3.fromRGB(143, 143, 143)
+    tbl.ClaimDetails.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    tbl.ClaimDetails.Text = "Claim current account as controller account and start script"
+    tbl.ClaimDetails.Visible = false
+    tbl.ClaimDetails.BackgroundTransparency = 1
+    tbl.ClaimDetails.Parent = tbl.ControlPanel
+
+    tbl.UIStroke_3.Color = Color3.fromRGB(143, 143, 143)
+    tbl.UIStroke_3.Thickness = 4
+    tbl.UIStroke_3.LineJoinMode = Enum.LineJoinMode.Bevel
+    tbl.UIStroke_3.Parent = tbl.MainWindow
+
+    local ReadyAccounts = 0
+    local AccountCount = 0
+    local Backup = {}
+    local PreviousList = {}
+    --Update account list
+    task.spawn(function()
+        repeat task.wait(0.5)
+            local success
+            local error
+            local Accounts
+            repeat task.wait()
+                success,error = pcall(function()
+                Accounts = readfile("CarTitanLoader.json")
+                Accounts = HttpService:JSONDecode(Accounts)
+                end)
+                if not success then
+                    writefile("CarTitanLoader.json",HttpService:JSONEncode(Backup))
+                end
+            until success
+            local CurrentList = {}
+            for _,account in Accounts do
+                table.insert(CurrentList,account[1])
+            end
+            if CurrentList ~= PreviousList then
+                for i,v in tbl.LoadedAccounts:GetChildren() do
+                    if v.Name == "Account" then
+                        v:Destroy()
+                    end
+                end
+                local newlisting = tbl.Template:Clone()
+                newlisting.Parent = tbl.LoadedAccounts
+                newlisting.Name = "Account"
+                newlisting.Text = Player.Name
+                newlisting.Visible = true
+            end
+            local UpdatedList = {}
+            local ReadyCount = 0
+            for index,account in Accounts do
+                if account[1] == Player.Name then
+                    local IsReady = Player:WaitForChild("plrStats"):WaitForChild("Cars"):WaitForChild("Van").Value == true or Player:WaitForChild("plrStats"):WaitForChild("Coins").Value >= 1000
+                    table.insert(UpdatedList,{account[1],{tick(),account[2][2]},IsReady})
+                    if IsReady then
+                        ReadyCount = ReadyCount+1
+                    end
+                elseif Players:FindFirstChild(account[1]) and tonumber(account[2][1]) > tick()-5 then
+                    if CurrentList ~= PreviousList then
+                        local newlisting = tbl.Template:Clone()
+                        newlisting.Parent = tbl.LoadedAccounts
+                        newlisting.Name = "Account"
+                        newlisting.Text = account[1]
+                        newlisting.Visible = true
+                    end
+                    if account[3] then
+                        ReadyCount = ReadyCount+1
+                    end
+                    table.insert(UpdatedList,account)
+                end
+            end
+            ReadyAccounts = ReadyCount
+            AccountCount = #UpdatedList
+            if AccountCount < 7 then
+                tbl.Status.Visible = true
+                tbl.ClaimOwner.Visible = false
+                tbl.ClaimDetails.Visible = false
+                tbl.Status.Text = tostring(ReadyAccounts).." out of 7 accounts loaded"
+            elseif ReadyAccounts < 7 then
+                tbl.Status.Visible = true
+                tbl.ClaimOwner.Visible = false
+                tbl.ClaimDetails.Visible = false
+                tbl.Status.Text = tostring(ReadyAccounts).." out of 7 accounts own or can afford the van"
+            else
+                tbl.Status.Visible = false
+                tbl.ClaimOwner.Visible = true
+                tbl.ClaimDetails.Visible = true
+            end
+            writefile("CarTitanLoader.json",HttpService:JSONEncode(UpdatedList))
+            Backup = Accounts
+            PreviousList = CurrentList
+        until tbl.CarTitanLoader.Parent == nil
+    end)
+    local StopChecking = false
+    task.spawn(function()
+        repeat task.wait(1)
+            local Accounts
+            repeat task.wait()
+                success,error = pcall(function()
+                Accounts = readfile("CarTitanLoader.json")
+                Accounts = HttpService:JSONDecode(Accounts)
+                end)
+            until success
+            for _,account in Accounts do
+                if account[1] == Player.Name and account[2][2] ~= "" then
+                    StopChecking = true
+                    tbl.CarTitanLoader:Destroy()
+                    task.wait(2)
+                    local executionstring = account[2][2]
+                    task.spawn(function()
+                        task.wait(5)
+                        writefile("CarTitanLoader.json",HttpService:JSONEncode({}))
+                    end)
+                    local success
+                    local err
+                    repeat task.wait()
+                        success,err = pcall(function()
+                            loadstring(executionstring)()
+                        end)
+                    until success
+                end
+            end
+        until StopChecking == true
+    end)
+    local BodyPartCount = 0
+    tbl.ClaimOwner.MouseButton1Click:Connect(function()
+        local Accounts
+            repeat task.wait()
+                success,error = pcall(function()
+                Accounts = readfile("CarTitanLoader.json")
+                Accounts = HttpService:JSONDecode(Accounts)
+                end)
+            until success
+        ExecutionListing = {}
+        for _,account in Accounts do
+            if account[1] == Player.Name then
+                table.insert(ExecutionListing,{Player.Name,{tick(),[[loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/TitanController.lua"))()]]}, true})
+            else
+                BodyPartCount = BodyPartCount+1
+                if BodyPartCount == 1 then
+                    table.insert(ExecutionListing,{account[1],{tick(),[[
+                        getgenv().Mode = "TorsoLeft" -- Head, TorsoLeft, TorsoRight, LeftArm, RightArm, LeftLeg, RightLeg
+                        loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/TitanPart.lua"))()
+                    ]]}, true})
+                elseif BodyPartCount == 2 then
+                    table.insert(ExecutionListing,{account[1],{tick(),[[
+                        getgenv().Mode = "TorsoRight" -- Head, TorsoLeft, TorsoRight, LeftArm, RightArm, LeftLeg, RightLeg
+                        loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/TitanPart.lua"))()
+                    ]]}, true})
+                elseif BodyPartCount == 3 then
+                    table.insert(ExecutionListing,{account[1],{tick(),[[
+                        getgenv().Mode = "LeftArm" -- Head, TorsoLeft, TorsoRight, LeftArm, RightArm, LeftLeg, RightLeg
+                        loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/TitanPart.lua"))()
+                    ]]}, true})
+                elseif BodyPartCount == 4 then
+                    table.insert(ExecutionListing,{account[1],{tick(),[[
+                        getgenv().Mode = "RightArm" -- Head, TorsoLeft, TorsoRight, LeftArm, RightArm, LeftLeg, RightLeg
+                        loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/TitanPart.lua"))()
+                    ]]}, true})
+                elseif BodyPartCount == 5 then
+                    table.insert(ExecutionListing,{account[1],{tick(),[[
+                        getgenv().Mode = "LeftLeg" -- Head, TorsoLeft, TorsoRight, LeftArm, RightArm, LeftLeg, RightLeg
+                        loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/TitanPart.lua"))()
+                    ]]}, true})
+                elseif BodyPartCount == 6 then
+                    table.insert(ExecutionListing,{account[1],{tick(),[[
+                        getgenv().Mode = "RightLeg" -- Head, TorsoLeft, TorsoRight, LeftArm, RightArm, LeftLeg, RightLeg
+                        loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/TitanPart.lua"))()
+                    ]]}, true})
+                end
+            end
+        end
+        writefile("CarTitanLoader.json",HttpService:JSONEncode(ExecutionListing))
+        writefile("CarTitanLoadertester.json",HttpService:JSONEncode(ExecutionListing))
+    end)
+else
+    print("No more accounts needed")
+end
+
