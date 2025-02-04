@@ -118,6 +118,7 @@ tbl.Head.Name = "Head"
 tbl.Head.PivotOffset = CFrame.new(0, -44.4229, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
 tbl.Head.Parent = tbl.Rig
 tbl.Head.CanCollide = true
+tbl.Head.CollisonGroup = "Players"
 
 tbl.Mesh.Scale = Vector3.new(1.25, 1.25, 1.25)
 tbl.Mesh.Parent = tbl.Head
@@ -155,6 +156,7 @@ tbl.Torso.BrickColor = BrickColor.new("Sand green")
 tbl.Torso.Name = "Torso"
 tbl.Torso.Parent = tbl.Rig
 tbl.Torso.CanCollide = true
+tbl.Torso..CollisonGroup = "Players"
 
 tbl.roblox.Name = "roblox"
 tbl.roblox.Parent = tbl.Torso
@@ -247,6 +249,7 @@ tbl.Left_Arm.Size = Vector3.new(9.87176, 19.7435, 9.87176)
 tbl.Left_Arm.BrickColor = BrickColor.new("Sand green")
 tbl.Left_Arm.Name = "Left Arm"
 tbl.Left_Arm.Parent = tbl.Rig
+tbk.Left_Arm.CollisonGroup = "Players"
 
 tbl.LeftShoulderAttachment.CFrame = CFrame.new(0, 9.87176, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
 tbl.LeftShoulderAttachment.WorldCFrame = CFrame.new(-14.7937, 39.487, 1.30777, 1, 0, 0, 0, 1, 0, 0, 0, 1)
@@ -266,6 +269,7 @@ tbl.Right_Arm.Size = Vector3.new(9.87176, 19.7435, 9.87176)
 tbl.Right_Arm.BrickColor = BrickColor.new("Sand green")
 tbl.Right_Arm.Name = "Right Arm"
 tbl.Right_Arm.Parent = tbl.Rig
+tbl.Right_Arm.CollisonGroup = "Players"
 
 tbl.RightShoulderAttachment.CFrame = CFrame.new(0, 9.87176, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
 tbl.RightShoulderAttachment.WorldCFrame = CFrame.new(14.8216, 39.487, 1.30777, 1, 0, 0, 0, 1, 0, 0, 0, 1)
@@ -286,6 +290,7 @@ tbl.Left_Leg.Size = Vector3.new(9.87176, 19.7435, 9.87176)
 tbl.Left_Leg.BrickColor = BrickColor.new("Sand green")
 tbl.Left_Leg.Name = "Left Leg"
 tbl.Left_Leg.Parent = tbl.Rig
+tbl.Left_Leg.CollisonGroup = "Players"
 
 tbl.LeftFootAttachment.CFrame = CFrame.new(0, -9.87176, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
 tbl.LeftFootAttachment.WorldCFrame = CFrame.new(-4.92194, -2.86102e-06, 1.30777, 1, 0, 0, 0, 1, 0, 0, 0, 1)
@@ -301,6 +306,7 @@ tbl.Right_Leg.Size = Vector3.new(9.87176, 19.7435, 9.87176)
 tbl.Right_Leg.BrickColor = BrickColor.new("Sand green")
 tbl.Right_Leg.Name = "Right Leg"
 tbl.Right_Leg.Parent = tbl.Rig
+tbl.Right_Leg.CollisonGroup = "Players"
 
 tbl.RightFootAttachment.CFrame = CFrame.new(0, -9.87176, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
 tbl.RightFootAttachment.WorldCFrame = CFrame.new(4.94982, -2.86102e-06, 1.30777, 1, 0, 0, 0, 1, 0, 0, 0, 1)
@@ -357,6 +363,7 @@ tbl.HumanoidRootPart.TopSurface = Enum.SurfaceType.Smooth
 tbl.HumanoidRootPart.Size = Vector3.new(19.7435, 19.7435, 9.87176)
 tbl.HumanoidRootPart.Name = "HumanoidRootPart"
 tbl.HumanoidRootPart.Parent = tbl.Rig
+tbl.HumanoidRootPart.CollisonGroup = "Players"
 
 tbl.RootAttachment.WorldCFrame = CFrame.new(0.0139389, 29.6153, 1.30777, 1, 0, 0, 0, 1, 0, 0, 0, 1)
 tbl.RootAttachment.Name = "RootAttachment"
