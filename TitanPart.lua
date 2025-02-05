@@ -43,12 +43,15 @@ end)
 task.spawn(function()
     if not game:GetService("Workspace"):FindFirstChild("CarTitan") then
     repeat
-    for _,d in game:GetService("Workspace"):GetDescendants() do
-        pcall(function()
-            d.CanCollide = false
-            d.CollisionGroup = "Default"
-        end)
+    for _,child in game:GetService("Workspace"):GetChildren() do
+    pcall(function()
+    if game:GetService("Players"):FindFirstChild(child.Name) then
+  --do nothing
+    elseif child.Name ~= "SpawnedCars" and child ~= game:GetService("Workspace").CurrentCamera and child.Name ~= "Nametags" then
+        child:Destroy()
     end
+    end)
+end
     task.wait(30)
     until false
     else
