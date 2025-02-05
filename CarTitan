@@ -12,8 +12,15 @@ if not success then
     writefile("CarTitanLoader.json",HttpService:JSONEncode(Accounts))
     task.wait(1)
 end
-local Accounts = readfile("CarTitanLoader.json")
-local Accounts = HttpService:JSONDecode(Accounts)
+local success
+local error
+local Accounts
+repeat task.wait()
+    success,error = pcall(function()
+        Accounts = readfile("CarTitanLoader.json")
+        Accounts = HttpService:JSONDecode(Accounts)
+    end)
+until success
 local AccountsUpdated = {}
 for index,account in Accounts do
     if Players:FindFirstChild(account[1]) and account[1] ~= Player.Name and tonumber(account[2][1]) > tick()-5 then
@@ -314,6 +321,8 @@ if #AccountsUpdated <= 7 then
     local StopChecking = false
     task.spawn(function()
         repeat task.wait(1)
+            local success
+            local error
             local Accounts
             repeat task.wait()
                 success,error = pcall(function()
@@ -344,7 +353,9 @@ if #AccountsUpdated <= 7 then
     end)
     local BodyPartCount = 0
     tbl.ClaimOwner.MouseButton1Click:Connect(function()
-        local Accounts
+            local success
+            local error
+            local Accounts
             repeat task.wait()
                 success,error = pcall(function()
                 Accounts = readfile("CarTitanLoader.json")
@@ -396,4 +407,3 @@ if #AccountsUpdated <= 7 then
 else
     print("No more accounts needed")
 end
-
