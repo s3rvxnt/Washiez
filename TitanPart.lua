@@ -4,7 +4,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/
 local LimbOffsets = {
     Head = CFrame.Angles(math.rad(-90),0,math.rad(180)) * CFrame.new(0,-4.5,-7),
     TorsoLeft = CFrame.Angles(math.rad(-90),0,0) * CFrame.new(-5,-3,-3),
-    TorsoRight = CFrame.Angles(math.rad(90),0,0) * CFrame.new(5,-3,-3),
+    TorsoRight = CFrame.Angles(math.rad(-90),0,0) * CFrame.new(5,-3,-3),
     RightArm = CFrame.Angles(math.rad(-90),0,0) * CFrame.new(0,-3,-3),
     LeftArm = CFrame.Angles(math.rad(-90),0,0) * CFrame.new(0,-3,-3),
     RightLeg = CFrame.Angles(math.rad(-90),0,0) * CFrame.new(0,-3,-1.5),
