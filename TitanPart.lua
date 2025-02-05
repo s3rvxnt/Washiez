@@ -1,7 +1,7 @@
 local Mode = getgenv().Mode
 local Player = game:GetService("Players").LocalPlayer
 loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/Utils"))()
-local LimbOffsets = {
+getgenv().LimbOffsets = {
     Head = CFrame.Angles(-1.6,0,3.1) * CFrame.new(0,-4.5,-7),
     TorsoLeft = CFrame.Angles(-1.6,0,0) * CFrame.new(-5,-3,-3),
     TorsoRight = CFrame.Angles(-1.6,0,0) * CFrame.new(5,-3,-3),
@@ -78,7 +78,7 @@ local temp = Mode
 if string.find(Mode,"Torso") then 
 temp = "Torso"
 end
-Vehicle:PivotTo(CFrame.new(unpack(data[temp]))*LimbOffsets[Mode])
+Vehicle:PivotTo(CFrame.new(unpack(data[temp]))*getgenv().LimbOffsets[Mode])
 for _,d in Vehicle:GetDescendants() do 
     pcall(function()
         d.AssemblyAngularVelocity = Vector3.new(0,0,0)
