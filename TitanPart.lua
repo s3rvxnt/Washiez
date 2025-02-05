@@ -1,14 +1,14 @@
 local Mode = getgenv().Mode
 local Player = game:GetService("Players").LocalPlayer
 loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/Utils"))()
-getgenv().LimbOffsets = {
-    Head = CFrame.Angles(-1.6,0,3.1) * CFrame.new(0,-4.5,-7),
-    TorsoLeft = CFrame.Angles(-1.6,0,0) * CFrame.new(-5,-3,-3),
-    TorsoRight = CFrame.Angles(-1.6,0,0) * CFrame.new(5,-3,-3),
-    RightArm = CFrame.Angles(-1.6,0,0) * CFrame.new(0,-3,-3),
-    LeftArm = CFrame.Angles(-1.6,0,0) * CFrame.new(0,-3,-3),
-    RightLeg = CFrame.Angles(-1.6,0,0) * CFrame.new(0,-3,-1.5),
-    LeftLeg = CFrame.Angles(-1.6,0,0) * CFrame.new(0,-3,-1.5)
+local LimbOffsets = {
+    Head = CFrame.Angles(math.rad(-90),0,math.rad(180)) * CFrame.new(0,-4.5,-7),
+    TorsoLeft = CFrame.Angles(math.rad(-90),0,0) * CFrame.new(-5,-3,-3),
+    TorsoRight = CFrame.Angles(math.rad(90),0,0) * CFrame.new(5,-3,-3),
+    RightArm = CFrame.Angles(math.rad(-90),0,0) * CFrame.new(0,-3,-3),
+    LeftArm = CFrame.Angles(math.rad(-90),0,0) * CFrame.new(0,-3,-3),
+    RightLeg = CFrame.Angles(math.rad(-90),0,0) * CFrame.new(0,-3,-1.5),
+    LeftLeg = CFrame.Angles(math.rad(-90),0,0) * CFrame.new(0,-3,-1.5)
 }
 
 local Vehicle = getgenv().WashiezGetVehicle()
@@ -78,7 +78,7 @@ local temp = Mode
 if string.find(Mode,"Torso") then 
 temp = "Torso"
 end
-Vehicle:PivotTo(CFrame.new(unpack(data[temp]))*getgenv().LimbOffsets[Mode])
+Vehicle:PivotTo(CFrame.new(unpack(data[temp]))*LimbOffsets[Mode])
 for _,d in Vehicle:GetDescendants() do 
     pcall(function()
         d.AssemblyAngularVelocity = Vector3.new(0,0,0)
