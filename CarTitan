@@ -302,7 +302,7 @@ if #AccountsUpdated <= 7 then
                 tbl.Status.Visible = true
                 tbl.ClaimOwner.Visible = false
                 tbl.ClaimDetails.Visible = false
-                tbl.Status.Text = tostring(ReadyAccounts).." out of 7 accounts loaded"
+                tbl.Status.Text = tostring(AccountCount).." out of 7 accounts loaded"
             elseif ReadyAccounts < 7 then
                 tbl.Status.Visible = true
                 tbl.ClaimOwner.Visible = false
