@@ -42,30 +42,32 @@ end)
 
 task.spawn(function()
     if not game:GetService("Workspace"):FindFirstChild("CarTitan") then
-        repeat
-            pcall(function()
-            for _,child in game:GetService("Workspace"):GetChildren() do
-                if child ~= game:GetService("Workspace").SpawnedCars and child ~= Player.Character then
-                    child:Destroy()
-                end
-            end
-            task.wait(10)
-                    end)
-        until false
+    repeat
+    for _,child in game:GetService("Workspace"):GetChildren() do
+    pcall(function()
+    if game:GetService("Players"):FindFirstChild(child.Name) then
+  --do nothing
+    elseif child.Name ~= "SpawnedCars" and child ~= game:GetService("Workspace").CurrentCamera and child.Name ~= "Nametags" then
+        child:Destroy()
+    end
+    end)
+end
+    task.wait(30)
+    until false
     else
-        repeat
-            for _,d in game:GetService("Workspace").SpawnedCars:GetDescendants() do
-                pcall(function()
-                    d.CanCollide = false
-                    d.CollisionGroup = "Default"
-                end)
-            end
-            task.wait(10)
-        until false
+    repeat
+        for _,d in game:GetService("Workspace").SpawnedCars:GetDescendants() do
+            pcall(function()
+                d.CanCollide = false
+                d.CollisionGroup = "Default"
+            end)
+        end
+        task.wait(5)
+    until false
     end
 end)
 
-SuperStep(function()
+game:GetService("RunService").Heartbeat:Connect(function()
 pcall(function()
 local data = readfile("Titan.lua")
 local data = game:GetService("HttpService"):JSONDecode(data)
@@ -80,5 +82,11 @@ if string.find(Mode,"Torso") then
 temp = "Torso"
 end
 Vehicle:PivotTo(CFrame.new(unpack(data[temp]))*LimbOffsets[Mode])
-end)
+for _,d in Vehicle:GetDescendants() do 
+    pcall(function()
+        d.AssemblyAngularVelocity = Vector3.new(0,0,0)
+        d.AssemblyLinearVelocity = Vector3.new(0,0,0)
     end)
+end
+end)
+end)
