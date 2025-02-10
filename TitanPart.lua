@@ -42,29 +42,26 @@ end)
 
 task.spawn(function()
     if not game:GetService("Workspace"):FindFirstChild("CarTitan") then
-    repeat
-        for _,child in game:GetService("Workspace"):GetChildren() do
-            if child ~= game:GetService("Workspace").SpawnedCars and child ~= Player.Character then
-                child:Destroy()
-            end
-        end
-        for _,child in game:GetService("Workspace").SpawnedCars:GetChildren() do
-            if child ~= getgenv().WashiezGetVehicle() then
-                child:Destroy()
-            end
-        end
-        task.wait(10)
-    until false
-    else
-    repeat
-        for _,d in game:GetService("Workspace").SpawnedCars:GetDescendants() do
+        repeat
             pcall(function()
-                d.CanCollide = false
-                d.CollisionGroup = "Default"
-            end)
-        end
-        task.wait(5)
-    until false
+            for _,child in game:GetService("Workspace"):GetChildren() do
+                if child ~= game:GetService("Workspace").SpawnedCars and child ~= Player.Character then
+                    child:Destroy()
+                end
+            end
+            task.wait(10)
+                    end)
+        until false
+    else
+        repeat
+            for _,d in game:GetService("Workspace").SpawnedCars:GetDescendants() do
+                pcall(function()
+                    d.CanCollide = false
+                    d.CollisionGroup = "Default"
+                end)
+            end
+            task.wait(10)
+        until false
     end
 end)
 
