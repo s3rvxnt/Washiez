@@ -45,8 +45,10 @@ task.spawn(function()
     repeat
     for _,child in game:GetService("Workspace"):GetDescendants() do
     pcall(function()
-        if child ~= Vehicle and not child:IsDescendantOf(Vehicle) and child ~= game:GetService("Workspace").SpawnedCars then
-            child:Destroy()
+        if child ~= Vehicle and child ~= game:GetService("Workspace").SpawnedCars then
+            if not child:IsDescendantOf(Vehicle) then
+                child:Destroy()
+            end
         end
     end)
 end
