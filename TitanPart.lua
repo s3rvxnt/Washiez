@@ -44,12 +44,12 @@ task.spawn(function()
     if not game:GetService("Workspace"):FindFirstChild("CarTitan") then
     repeat
         for _,child in game:GetService("Workspace"):GetChildren() do
-            if child ~= game:GetService("Workspace").SpawnedCars then
+            if child ~= game:GetService("Workspace").SpawnedCars and child ~= Player.Character then
                 child:Destroy()
             end
         end
         for _,child in game:GetService("Workspace").SpawnedCars:GetChildren() do
-            if child ~= Vehicle then
+            if child ~= getgenv().WashiezGetVehicle() then
                 child:Destroy()
             end
         end
