@@ -67,7 +67,7 @@ end
     end
 end)
 
-game:GetService("RunService").Heartbeat:Connect(function()
+repeat task.wait()
 pcall(function()
 local data = readfile("Titan.lua")
 local data = game:GetService("HttpService"):JSONDecode(data)
@@ -89,4 +89,4 @@ for _,d in Vehicle:GetDescendants() do
     end)
 end
 end)
-end)
+until false
