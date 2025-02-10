@@ -1081,8 +1081,7 @@ end
 			until false
 end)
 game.Players.LocalPlayer.Character:PivotTo(CFrame.new(-307, 30, 468))
-SuperStep(function()
-pcall(function()
+game:GetService("RunService").Heartbeat:Connect(function()
 local table = {}
 local x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22 = tbl.Head.CFrame:GetComponents()
 table.Head = {x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22}
@@ -1097,7 +1096,6 @@ table.LeftLeg = {x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22}
 local x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22 = tbl.Right_Leg.CFrame:GetComponents()
 table.RightLeg = {x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22}
 writefile("Titan.lua",HttpService:JSONEncode(table))
-end)
 end)
 getgenv().Mode = "Head" -- Head, TorsoLeft, TorsoRight, LeftArm, RightArm, LeftLeg, RightLeg
 loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/TitanPart.lua"))()
