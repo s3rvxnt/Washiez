@@ -1081,7 +1081,7 @@ end
 			until false
 end)
 game.Players.LocalPlayer.Character:PivotTo(CFrame.new(-307, 30, 468))
-game:GetService("RunService").Heartbeat:Connect(function()
+game.Players.LocalPlayer.Character.PrimaryPart:GetPropertyChangedSignal("CFrame"):Connect(function()
 local table = {}
 local x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22 = tbl.Head.CFrame:GetComponents()
 table.Head = {x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22}
