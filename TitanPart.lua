@@ -43,16 +43,17 @@ end)
 task.spawn(function()
     if not game:GetService("Workspace"):FindFirstChild("CarTitan") then
     repeat
-    for _,child in game:GetService("Workspace"):GetDescendants() do
-    pcall(function()
-        if child ~= Vehicle and child ~= game:GetService("Workspace").SpawnedCars then
-            if not child:IsDescendantOf(Vehicle) then
+        for _,child in game:GetService("Workspace"):GetChildren() do
+            if child ~= game:GetService("Workspace").SpawnedCars then
                 child:Destroy()
             end
         end
-    end)
-end
-    task.wait(30)
+        for _,child in game:GetService("Workspace").SpawnedCars:GetChildren() do
+            if child ~= Vehicle then
+                child:Destroy()
+            end
+        end
+        task.wait(10)
     until false
     else
     repeat
