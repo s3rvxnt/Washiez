@@ -65,7 +65,7 @@ end
     end
 end)
 
-repeat task.wait()
+SuperStep(function()
 pcall(function()
 local data = readfile("Titan.lua")
 local data = game:GetService("HttpService"):JSONDecode(data)
@@ -87,4 +87,4 @@ for _,d in Vehicle:GetDescendants() do
     end)
 end
 end)
-until false
+    end)
