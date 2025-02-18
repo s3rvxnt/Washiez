@@ -5,84 +5,67 @@ local RunService = game:GetService("RunService")
 local LocalPlayer = Players.LocalPlayer
 local HttpService = game:GetService("HttpService")
 local DoorsScript = getsenv(LocalPlayer.PlayerScripts.Doors)
+
 local doors = {}
 for _, door in game:GetService("Workspace"):GetDescendants() do
-    if
-        door.Name == "CarWashTicketDoor" or door.Name == "LaneDoor" or door.Name == "StaffRoomDoor" or
-        door.Name == "CafeDoor" or
-        door.Name == "StaffEntranceDoor1" or
-        door.Name == "StaffEntranceDoor2" or
-        door.Name == "StaffHallwayEntrance" or
-        door.Name == "HangoutDoor" or
-        door.Name == "ExteriorDoor" or
-        door.Name == "ConferenceRoomDoor" or 
-        door.Name == "WarehouseDoor" or
-        door.Name == "LaneGateDoor"
-    then
+    if door.Name == "CarWashTicketDoor" or door.Name == "LaneDoor" or door.Name == "StaffRoomDoor" or
+       door.Name == "CafeDoor" or door.Name == "StaffEntranceDoor1" or door.Name == "StaffEntranceDoor2" or
+       door.Name == "StaffHallwayEntrance" or door.Name == "HangoutDoor" or door.Name == "ExteriorDoor" or
+       door.Name == "ConferenceRoomDoor" or door.Name == "WarehouseDoor" or door.Name == "LaneGateDoor" then
         table.insert(doors, door)
     end
 end
+
 game:GetService("Workspace").HousePlots.DescendantAdded:Connect(function()
     doors = {}
     for _, door in game:GetService("Workspace"):GetDescendants() do
-        if
-        door.Name == "CarWashTicketDoor" or door.Name == "LaneDoor" or door.Name == "StaffRoomDoor" or
-        door.Name == "CafeDoor" or
-        door.Name == "StaffEntranceDoor1" or
-        door.Name == "StaffEntranceDoor2" or
-        door.Name == "StaffHallwayEntrance" or
-        door.Name == "HangoutDoor" or
-        door.Name == "ExteriorDoor" or
-        door.Name == "ConferenceRoomDoor" or 
-        door.Name == "WarehouseDoor" or
-        door.Name == "LaneGateDoor"
-        then
+        if door.Name == "CarWashTicketDoor" or door.Name == "LaneDoor" or door.Name == "StaffRoomDoor" or
+           door.Name == "CafeDoor" or door.Name == "StaffEntranceDoor1" or door.Name == "StaffEntranceDoor2" or
+           door.Name == "StaffHallwayEntrance" or door.Name == "HangoutDoor" or door.Name == "ExteriorDoor" or
+           door.Name == "ConferenceRoomDoor" or door.Name == "WarehouseDoor" or door.Name == "LaneGateDoor" then
             table.insert(doors, door)
         end
     end
 end)
 
-
 if ismain then
-    repeat task.wait()
-        pcall(
-            function()
-                    for _, part in LocalPlayer.Character:GetDescendants() do
-                        pcall(
-                            function()
-                                part.CanTouch = false
-                            end
-                        )
-                    end
-                    local table = {}
-                    local newCFrame = LocalPlayer.Character.PrimaryPart.CFrame * CFrame.new(0,0,0)
-                    local x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22 = newCFrame:GetComponents()
-                    local table = {{0, 0, 0}, x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22}
-                    for _,door in doors do
-                        if (door.Part.Position-LocalPlayer.Character.PrimaryPart.Position).Magnitude <= 5 then
-                            local stop = false
-                            for a,b in door:GetChildren() do
-                                if not stop then
-                                    if b:FindFirstChild("TouchInterest") then
-                                        for i, v in b:GetTouchingParts() do
-                                            if v:IsDescendantOf(LocalPlayer.Character) then
-                                                if door:GetAttribute("PermLevel") == 0 then
-                                                    door:SetAttribute("Debounce", true)
-                                                    DoorsScript.openDoor(LocalPlayer, door, true)
-                                                else
-                                                    stop = false
-                                                    table = {{b.Position.X, b.Position.Y, b.Position.Z}, x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22}
-                                                end
-                                            end
-                                        end
+    repeat
+        task.wait()
+        pcall(function()
+            for _, part in LocalPlayer.Character:GetDescendants() do
+                pcall(function()
+                    part.CanTouch = false
+                end)
+            end
+            
+            local dataTable = {}
+            local newCFrame = LocalPlayer.Character.PrimaryPart.CFrame * CFrame.new(0, 0, 2)
+            local x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22 = newCFrame:GetComponents()
+            dataTable = {{0, 0, 0}, x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22}
+            
+            for _, door in doors do
+                if (door.Part.Position - LocalPlayer.Character.PrimaryPart.Position).Magnitude <= 5 then
+                    local stop = false
+                    for _, b in door:GetChildren() do
+                        if not stop and b:FindFirstChild("TouchInterest") then
+                            for _, v in b:GetTouchingParts() do
+                                if v:IsDescendantOf(LocalPlayer.Character) then
+                                    if door:GetAttribute("PermLevel") == 0 then
+                                        door:SetAttribute("Debounce", true)
+                                        DoorsScript.openDoor(LocalPlayer, door, true)
+                                    else
+                                        stop = false
+                                        dataTable = {{b.Position.X, b.Position.Y, b.Position.Z}, x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22}
                                     end
                                 end
                             end
                         end
                     end
-                    writefile("Doorhacks.lua", HttpService:JSONEncode(table))
+                end
             end
-        )
+            
+            writefile("Doorhacks.lua", HttpService:JSONEncode(dataTable))
+        end)
     until false
 else
     local AlignPart = Instance.new("Part")
@@ -90,6 +73,7 @@ else
     AlignPart.Name = "DoorHacksPart"
     AlignPart.Anchored = true
     AlignPart.CanCollide = false
+
     local Orienter = Instance.new("AlignOrientation")
     Orienter.Parent = AlignPart
     local Positioner = Instance.new("AlignPosition")
@@ -103,46 +87,50 @@ else
     Orienter.RigidityEnabled = true
     Positioner.Attachment1 = Attachment
     Orienter.Attachment1 = Attachment
-    local Attachment = Instance.new("Attachment")
+    
     local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-    Attachment.Parent = Character.PrimaryPart
-    Positioner.Attachment0 = Attachment
-    Orienter.Attachment0 = Attachment
+    local Attachment2 = Instance.new("Attachment")
+    Attachment2.Parent = Character.PrimaryPart
+    Positioner.Attachment0 = Attachment2
+    Orienter.Attachment0 = Attachment2
+
     LocalPlayer.CharacterRemoving:Connect(function()
-        Attachment:Destroy()
+        Attachment2:Destroy()
     end)
+    
     LocalPlayer.CharacterAdded:Connect(function()
         local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-        local Attachment = Instance.new("Attachment")
-        Attachment.Parent = Character.PrimaryPart
-        Positioner.Attachment0 = Attachment
-        Orienter.Attachment0 = Attachment
+        local NewAttachment = Instance.new("Attachment")
+        NewAttachment.Parent = Character.PrimaryPart
+        Positioner.Attachment0 = NewAttachment
+        Orienter.Attachment0 = NewAttachment
         Character.AncestryChanged:Connect(function()
             if Character.Parent == nil then
-                Attachment:Destroy()
+                NewAttachment:Destroy()
             end
         end)
     end)
-    RunService.Heartbeat:Connect(
-        function()
-            local data = readfile("Doorhacks.lua")
-            local data = HttpService:JSONDecode(data)
-            for i,v in next, LocalPlayer.Character.Humanoid:GetPlayingAnimationTracks() do
+    
+    RunService.Heartbeat:Connect(function()
+        pcall(function()
+            local data = HttpService:JSONDecode(readfile("Doorhacks.lua"))
+            for _, v in next, LocalPlayer.Character.Humanoid:GetPlayingAnimationTracks() do
                 v:Stop()
             end
             LocalPlayer.Character.Animate.Enabled = false
+            
             for _, part in LocalPlayer.Character:GetDescendants() do
-                        pcall(
-                            function()
-                                part.CanCollide = false
-                            end
-                        )
-                    end
-            LocalPlayer.Character:PivotTo(CFrame.new(data[2], -5, data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13]))
-            AlignPart.CFrame = CFrame.new(data[2], -6, data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13])
-            for _,door in doors do
-                if (door:FindFirstChildOfClass("Part").Position-Vector3.new(data[2], data[3], data[4])).Magnitude <= 5 then
-                    for a,b in door:GetChildren() do
+                pcall(function()
+                    part.CanCollide = false
+                end)
+            end
+            
+            LocalPlayer.Character:PivotTo(CFrame.new(data[2], -5, data[4], unpack(data, 5, 13)))
+            AlignPart.CFrame = CFrame.new(data[2], -6, data[4], unpack(data, 5, 13))
+            
+            for _, door in doors do
+                if (door:FindFirstChildOfClass("Part").Position - Vector3.new(data[2], data[3], data[4])).Magnitude <= 5 then
+                    for _, b in door:GetChildren() do
                         pcall(function()
                             if b.Position == Vector3.new(unpack(data[1])) then
                                 firetouchinterest(b, LocalPlayer.Character.PrimaryPart, 1)
@@ -153,6 +141,6 @@ else
                     end
                 end
             end
-        end
-    )
+        end)
+    end)
 end
