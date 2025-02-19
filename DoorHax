@@ -5,6 +5,7 @@ local RunService = game:GetService("RunService")
 local LocalPlayer = Players.LocalPlayer
 local HttpService = game:GetService("HttpService")
 local DoorsScript = getsenv(LocalPlayer.PlayerScripts.Doors)
+local DoorLocation = {0,0,0}
 
 local doors = {}
 for _, door in game:GetService("Workspace"):GetDescendants() do
@@ -12,61 +13,79 @@ for _, door in game:GetService("Workspace"):GetDescendants() do
        door.Name == "CafeDoor" or door.Name == "StaffEntranceDoor1" or door.Name == "StaffEntranceDoor2" or
        door.Name == "StaffHallwayEntrance" or door.Name == "HangoutDoor" or door.Name == "ExteriorDoor" or
        door.Name == "ConferenceRoomDoor" or door.Name == "WarehouseDoor" or door.Name == "LaneGateDoor" then
-        table.insert(doors, door)
-    end
-end
-
-game:GetService("Workspace").HousePlots.DescendantAdded:Connect(function()
-    doors = {}
-    for _, door in game:GetService("Workspace"):GetDescendants() do
-        if door.Name == "CarWashTicketDoor" or door.Name == "LaneDoor" or door.Name == "StaffRoomDoor" or
-           door.Name == "CafeDoor" or door.Name == "StaffEntranceDoor1" or door.Name == "StaffEntranceDoor2" or
-           door.Name == "StaffHallwayEntrance" or door.Name == "HangoutDoor" or door.Name == "ExteriorDoor" or
-           door.Name == "ConferenceRoomDoor" or door.Name == "WarehouseDoor" or door.Name == "LaneGateDoor" then
-            table.insert(doors, door)
-        end
-    end
-end)
-
-if ismain then
-    repeat
-        task.wait()
-        pcall(function()
-            for _, part in LocalPlayer.Character:GetDescendants() do
-                pcall(function()
-                    part.CanTouch = false
-                end)
-            end
-            
-            local dataTable = {}
-            local newCFrame = LocalPlayer.Character.PrimaryPart.CFrame * CFrame.new(0, 0, 2)
-            local x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22 = newCFrame:GetComponents()
-            dataTable = {{0, 0, 0}, x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22}
-            
-            for _, door in doors do
-                if (door.Part.Position - LocalPlayer.Character.PrimaryPart.Position).Magnitude <= 5 then
+        if ismain then
+                if door:GetAttribute("PermLevel") ~= nil then
+                    local FakeDoor = door:Clone()
+                    FakeDoor.Parent = door.Parent
+                    FakeDoor.Name = "FakeDoor"
+                    if FakeDoor:GetAttribute("PermLevel") < 100 then
+                        FakeDoor:SetAttribute("PermLevel", 0)
+                    end
+                    if door.PrimaryPart then
+                        door.PrimaryPart.CFrame = door.PrimaryPart.CFrame*CFrame.new(0,1000,0)
+                    else
+                        door:WaitForChild("HINGE").CFrame = door.HINGE.CFrame*CFrame.new(0,1000,0)
+                    end
+                    local RealTouchPart
                     local stop = false
-                    for _, b in door:GetChildren() do
-                        if not stop and b:FindFirstChild("TouchInterest") then
-                            for _, v in b:GetTouchingParts() do
-                                if v:IsDescendantOf(LocalPlayer.Character) then
-                                    if door:GetAttribute("PermLevel") == 0 then
-                                        door:SetAttribute("Debounce", true)
-                                        DoorsScript.openDoor(LocalPlayer, door, true)
-                                    else
-                                        stop = false
-                                        dataTable = {{b.Position.X, b.Position.Y, b.Position.Z}, x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22}
-                                    end
-                                end
+                    for _,touchpart in door:GetChildren() do
+                        if not stop then
+                            if touchpart:FindFirstChild("TouchInterest") then
+                                stop = true
+                                RealTouchPart = touchpart
                             end
                         end
                     end
+                    for _,touchpart in FakeDoor:GetChildren() do
+                        if touchpart:FindFirstChild("TouchInterest") then
+                            touchpart.Touched:Connect(function(part)
+                                pcall(function()
+                                    if part:IsDescendantOf(LocalPlayer.Character) and door:GetAttribute("PermLevel") == 0 then
+                                        firetouchinterest(RealTouchPart, LocalPlayer.Character.PrimaryPart, 1)
+                                        firetouchinterest(RealTouchPart, LocalPlayer.Character.PrimaryPart, 0)
+                                    elseif part:IsDescendantOf(LocalPlayer.Character) then
+                                        DoorLocation = {touchpart.Position.X,touchpart.Position.Y,touchpart.Position.Z}
+                                        repeat task.wait() until door:GetAttribute("Debounce") == true
+                                        DoorLocation = {0,0,0}
+                                    end
+                                end)
+                            end)
+                        end
+                    end
+                    for _,touchpart in door:GetChildren() do
+                        if touchpart:FindFirstChild("TouchInterest") then
+                            touchpart.Touched:Connect(function(part)
+                                pcall(function()
+                                    if part.Parent:FindFirstChild("Humanoid") and part.Parent ~= LocalPlayer.Character and door:GetAttribute("Debounce") == false and FakeDoor:GetAttribute("Debounce") == false then
+                                        for _,player in Players:GetPlayers() do
+                                            if player.Character then
+                                                if part:IsDescendantOf(player.Character) then
+                                                    FakeDoor:SetAttribute("Debounce", true)
+                                                    DoorsScript.openDoor(player, FakeDoor, true)
+                                                end
+                                            end
+                                        end
+                                    end
+                                end)
+                            end)
+                        end
+                    end
                 end
-            end
-            
+        else
+            table.insert(doors,door)
+        end
+    end
+end
+if ismain then
+    RunService.Heartbeat:Connect(function()
+        pcall(function()  
+            local dataTable = {}
+            local newCFrame = LocalPlayer.Character.PrimaryPart.CFrame * CFrame.new(0, 0, 2)
+            local x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22 = newCFrame:GetComponents()
+            dataTable = {DoorLocation, x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22}
             writefile("Doorhacks.lua", HttpService:JSONEncode(dataTable))
         end)
-    until false
+    end)
 else
     local AlignPart = Instance.new("Part")
     AlignPart.Parent = game:GetService("Workspace")
@@ -136,6 +155,15 @@ else
                                 firetouchinterest(b, LocalPlayer.Character.PrimaryPart, 1)
                                 task.wait()
                                 firetouchinterest(b, LocalPlayer.Character.PrimaryPart, 0)
+                                local Success
+                                local Error
+                                repeat task.wait()
+                                    Success,Error = pcall(function()
+                                        dataTable = {{0, 0, 0}, unpack(data, 2, 13)}
+                                        writefile("Doorhacks.lua", HttpService:JSONEncode(dataTable))
+                                    end)
+                                until Success
+                                print("ok continue")
                             end
                         end)
                     end
