@@ -22,9 +22,9 @@ for _, door in game:GetService("Workspace"):GetDescendants() do
                         FakeDoor:SetAttribute("PermLevel", 0)
                     end
                     if door.PrimaryPart then
-                        door.PrimaryPart.CFrame = door.PrimaryPart.CFrame*CFrame.new(0,1000,0)
+                        door.PrimaryPart.CFrame = door.PrimaryPart.CFrame*CFrame.new(0,1000000,0)
                     else
-                        door:WaitForChild("HINGE").CFrame = door.HINGE.CFrame*CFrame.new(0,1000,0)
+                        door:WaitForChild("HINGE").CFrame = door.HINGE.CFrame*CFrame.new(0,1000000,0)
                     end
                     local RealTouchPart
                     local stop = false
