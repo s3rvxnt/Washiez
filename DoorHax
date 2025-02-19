@@ -80,7 +80,7 @@ if ismain then
     RunService.Heartbeat:Connect(function()
         pcall(function()  
             local dataTable = {}
-            local newCFrame = LocalPlayer.Character.PrimaryPart.CFrame * CFrame.new(0, 0, 2)
+            local newCFrame = LocalPlayer.Character.PrimaryPart.CFrame * CFrame.new(0, 0, 0)
             local x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22 = newCFrame:GetComponents()
             dataTable = {DoorLocation, x, y, z, R00, R01, R02, R10, R11, R12, R20, R21, R22}
             writefile("Doorhacks.lua", HttpService:JSONEncode(dataTable))
