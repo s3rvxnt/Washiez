@@ -149,7 +149,7 @@ else
                 end)
             end
             
-            LocalPlayer.Character:PivotTo(CFrame.new(data[2], -5, data[4], unpack(data, 5, 13)))
+            LocalPlayer.Character:PivotTo(CFrame.new(data[2], -6, data[4], unpack(data, 5, 13)))
             AlignPart.CFrame = CFrame.new(data[2], -6, data[4], unpack(data, 5, 13))
             
             for _, door in doors do
