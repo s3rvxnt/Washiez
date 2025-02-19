@@ -60,8 +60,13 @@ for _, door in game:GetService("Workspace"):GetDescendants() do
                                         for _,player in Players:GetPlayers() do
                                             if player.Character then
                                                 if part:IsDescendantOf(player.Character) then
-                                                    FakeDoor:SetAttribute("Debounce", true)
-                                                    DoorsScript.openDoor(player, FakeDoor, true)
+                                                    if player.GroupInfo.Rank.Value <= door:GetAttribute("PermLevel") then
+                                                        FakeDoor:SetAttribute("Debounce", true)
+                                                        DoorsScript.openDoor(player, FakeDoor, true)
+                                                    else
+                                                        FakeDoor:SetAttribute("Debounce", true)
+                                                        DoorsScript.openDoor(player, FakeDoor, false)
+                                                    end
                                                 end
                                             end
                                         end
