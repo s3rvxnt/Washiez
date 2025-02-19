@@ -60,7 +60,7 @@ for _, door in game:GetService("Workspace"):GetDescendants() do
                                         for _,player in Players:GetPlayers() do
                                             if player.Character then
                                                 if part:IsDescendantOf(player.Character) then
-                                                    if player.GroupInfo.Rank.Value <= door:GetAttribute("PermLevel") then
+                                                    if player.GroupInfo.Rank.Value >= door:GetAttribute("PermLevel") then
                                                         FakeDoor:SetAttribute("Debounce", true)
                                                         DoorsScript.openDoor(player, FakeDoor, true)
                                                     else
@@ -158,17 +158,7 @@ else
                         pcall(function()
                             if b.Position == Vector3.new(unpack(data[1])) then
                                 firetouchinterest(b, LocalPlayer.Character.PrimaryPart, 1)
-                                task.wait()
                                 firetouchinterest(b, LocalPlayer.Character.PrimaryPart, 0)
-                                local Success
-                                local Error
-                                repeat task.wait()
-                                    Success,Error = pcall(function()
-                                        dataTable = {{0, 0, 0}, unpack(data, 2, 13)}
-                                        writefile("Doorhacks.lua", HttpService:JSONEncode(dataTable))
-                                    end)
-                                until Success
-                                print("ok continue")
                             end
                         end)
                     end
