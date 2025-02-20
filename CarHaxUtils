@@ -1,0 +1,39 @@
+local OG = game:GetService("Players").LocalPlayer.Character.PrimaryPart.CFrame
+    local OriginalVehicle = getgenv().WashiezGetVehicle()
+    local Vehicle = OriginalVehicle
+    repeat
+        local SCRIPT = game:GetService("Players").LocalPlayer.PlayerGui.CarSelection.Manager
+        local environment = getsenv(SCRIPT)
+        task.wait(1)
+        game:GetService("Players").LocalPlayer.Character.Humanoid.Sit = false
+        getgenv().WashiezRequestVehicleSpawn()
+        getgenv().WashiezSpawnVehicle("SUV")
+        local stop = false
+        task.delay(
+        game:GetService("Players").LocalPlayer:GetNetworkPing() + 0.5,
+        function()
+            stop = true
+        end
+        )
+        repeat
+            task.wait()
+            Vehicle = getgenv().WashiezGetVehicle()
+        until Vehicle ~= OriginalVehicle and Vehicle ~= nil or stop == true
+        if Vehicle ~= OriginalVehicle and Vehicle ~= nil then
+            Vehicle:WaitForChild("Chassis"):WaitForChild("VehicleSeat"):Sit(game:GetService("Players").LocalPlayer.Character.Humanoid)
+            repeat task.wait() until game:GetService("Players").LocalPlayer.PlayerGui.CarSelection.MainFrame.Position == UDim2.new(1, -5, 0.5, 0)
+            environment.closeMenu()
+        end
+    until Vehicle ~= OriginalVehicle
+    repeat task.wait() until game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("Driver",true)
+    local DriverGui = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("Driver",true).Parent
+    DriverGui.Driver.Enabled = false
+    local C1 = Vehicle:WaitForChild("Chassis"):WaitForChild("VehicleSeat"):WaitForChild("SeatWeld").C1
+    local Hijacker = DriverGui:Clone()
+    Hijacker.Parent = game.Lighting
+    getgenv().Hijacker = Hijacker
+    Hijacker.Name = "Hijacker"
+    getgenv().C1 = C1
+    game:GetService("Players").LocalPlayer.Character.Humanoid.Sit = false
+    game:GetService("ReplicatedStorage"):WaitForChild("CarSpawnSystem"):WaitForChild("RemoteEvents"):WaitForChild("CarSystem"):InvokeServer("OwnsCar","Police Car")
+game:GetService("Players").LocalPlayer.Character:PivotTo(OG)
