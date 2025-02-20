@@ -1,0 +1,81 @@
+local function hijack(TargetVehicle)
+    local C1 = getgenv().C1
+    local Hijacker = getgenv().Hijacker:Clone()
+    Hijacker.Parent = game:GetService("Players").LocalPlayer.PlayerGui
+    game:GetService("Players").LocalPlayer.Character.Humanoid.Sit = false
+    game:GetService("ReplicatedStorage"):WaitForChild("CarSpawnSystem"):WaitForChild("RemoteEvents"):WaitForChild("CarSystem"):InvokeServer("OwnsCar","Police Car")
+    game:GetService("Players").LocalPlayer.Character.Humanoid.Sit = true
+    task.wait(1)
+    Hijacker.ScriptsReference.Value = TargetVehicle.Scripts
+    Hijacker.Driver.CarValue.Value = TargetVehicle
+    game.Workspace.CurrentCamera.CameraSubject = TargetVehicle.Chassis.VehicleSeat
+    local AlignPart = Instance.new("Part")
+    AlignPart.Parent = game:GetService("Workspace")
+    AlignPart.Name = "Aligner"
+    AlignPart.Anchored = false
+    AlignPart.CanCollide = false
+    local FakeSeatWeld = Instance.new("Weld")
+    local FakeSeat = TargetVehicle:WaitForChild("Chassis"):WaitForChild("VehicleSeat"):Clone()
+    FakeSeat.Parent = TargetVehicle:WaitForChild("Chassis")
+    FakeSeat:ClearAllChildren()
+    FakeSeat.CollisionGroup = "Default"
+    FakeSeat.CanCollide = false
+    FakeSeat.Anchored = true
+    FakeSeatWeld.Parent = FakeSeat
+    FakeSeatWeld.C0 = CFrame.new(0, 0.125, 0, 1, 0, -0, 0, 0, 1, 0, -1, 0)
+    FakeSeatWeld.C1 = C1
+    FakeSeatWeld.Part0 = FakeSeatWeld.Parent
+    FakeSeatWeld.Part1 = AlignPart
+    local Orienter = Instance.new("AlignOrientation")
+    Orienter.Parent = AlignPart
+    local Positioner = Instance.new("AlignPosition")
+    Positioner.Parent = AlignPart
+    local Attachment = Instance.new("Attachment")
+    Attachment.Parent = AlignPart
+
+    Positioner.RigidityEnabled = true
+    Positioner.Responsiveness = 200
+    Orienter.Responsiveness = 200
+    Orienter.RigidityEnabled = true
+    Positioner.Attachment1 = Attachment
+    Orienter.Attachment1 = Attachment
+    
+    local Character = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.Character.CharacterAdded:Wait()
+    local Attachment2 = Instance.new("Attachment")
+    Attachment2.Parent = Character.PrimaryPart
+    Positioner.Attachment0 = Attachment2
+    Orienter.Attachment0 = Attachment2
+    Character:PivotTo(AlignPart.CFrame)
+    local vibrate = -1
+    local Connections = SuperStep(function()
+        vibrate = vibrate*-1
+        vibration = (TargetVehicle.PrimaryPart.AssemblyLinearVelocity.Magnitude*10)*vibrate
+        Character.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,0,0)
+        Character.PrimaryPart.AssemblyAngularVelocity = Vector3.new(0,vibration,0)
+        Character:PivotTo(AlignPart.CFrame)
+        FakeSeat.CFrame = TargetVehicle:WaitForChild("Chassis"):WaitForChild("VehicleSeat").CFrame
+        Character.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,0,0)
+        Character.PrimaryPart.AssemblyAngularVelocity = Vector3.new(0,vibration,0)
+    end)
+    TargetVehicle.AncestryChanged:Connect(function()
+        AlignPart:Destroy()
+        Attachment2:Destroy()
+        Hijacker:Destroy()
+        for _,Connection in Connections do
+            Connection:Disconnect()
+        end
+        game:GetService("Players").LocalPlayer.Character.Humanoid.Sit = false
+        game:GetService("Workspace").CurrentCamera.CameraSubject = game:GetService("Players").LocalPlayer.Character.Humanoid
+    end)
+    game:GetService("Players").LocalPlayer.CharacterRemoving:Connect(function()
+        AlignPart:Destroy()
+        Hijacker:Destroy()
+        for _,Connection in Connections do
+            Connection:Disconnect()
+        end
+    end)
+    task.wait(1)
+    Hijacker.Driver.Enabled = true
+end
+
+getgenv().Hijack = hijack
