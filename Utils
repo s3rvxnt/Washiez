@@ -54,18 +54,17 @@ getgenv().WashiezRequestVehicleSpawn = function()
 
         repeat
             task.wait()
-	pcall(function()
-            Player.Character:PivotTo(furthestSpawner.CarSpawner.Screen.CFrame)
+            Character:PivotTo(furthestSpawner.CarSpawner.Screen.CFrame)
             fireproximityprompt(furthestSpawner.CarSpawner.Screen.CarSystem)
-	end)
-        until Player.PlayerGui.CarSelection.MainFrame.Position ~= UDim2.new(1.2, 30, 0.5, 0)
-	local Character = Player.Character or Player.CharacterAdded:Wait()
+         until Player.PlayerGui.CarSelection.MainFrame.Position ~= UDim2.new(1.2, 30, 0.5, 0)
+
         Character.Animate.Disabled = false
         Character:PivotTo(originalCFrame)
     end
 end
 
 getgenv().WashiezSpawnVehicle = function(type)
+	local Original = getgenv().WashiezGetVehicle()
     local ohString1 = "Spawn"
     local ohString2 = type
     local ohTable3 = {
