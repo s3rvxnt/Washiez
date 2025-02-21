@@ -85,7 +85,7 @@ Vehicle:PivotTo(CFrame.new(unpack(data[temp]))*LimbOffsets[Mode])
 for _,d in Vehicle:GetDescendants() do 
     pcall(function()
         d.AssemblyAngularVelocity = Vector3.new(0,0,0)
-        d.AssemblyLinearVelocity = Vector3.new(0,100,0)
+        d.AssemblyLinearVelocity = Vector3.new(0,500,0)
     end)
 end
 end)
