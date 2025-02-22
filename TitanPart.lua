@@ -89,14 +89,11 @@ end
     until false
     end
 end)
-local correcting = false
-game:GetService("RunService").Heartbeat:Connect(function()
+repeat task.wait()
 pcall(function()
-if not correcting then
 local _, dimensions = Vehicle:GetBoundingBox()
 local currentvolume = dimensions.X * dimensions.Y * dimensions.Z
 if currentvolume > volumethreshold * 4.8 or Vehicle.Parent == nil then
-    correcting = true
                         Vehicle = GetVan()
                         correcting = false
 end
@@ -150,6 +147,5 @@ pcall(function() print(highestVelocity) end)
 --print(Vector3.new(0,(math.abs(highestVelocity)*-1)-50,0))
 local FinalVelocity = math.clamp(highestVelocity,400,1500)
 Vehicle.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,(FinalVelocity*-1)-100,0)
-                end
                 end)
-end)
+until false
