@@ -71,7 +71,7 @@ task.spawn(function()
     repeat
     VelocityChecks = {}
     for _,d in game:GetService("Workspace"):GetDescendants() do
-        if d:IsA("BasePart") and not d:IsDescendantOf(game:GetService("Workspace").SpawnedCars) then
+        if d:IsA("BasePart") and d:IsDescendantOf(game:GetService("Workspace").SpawnedCars) == false then
             if d.Anchored == false then
                 table.insert(VelocityChecks,d)
             end
@@ -102,14 +102,18 @@ for _,d in Vehicle:GetDescendants() do
     end)
 end
 local highestVelocity = 0
+local Highest = nil
 for _,d in VelocityChecks do
     if d.AssemblyLinearVelocity.Magnitude > highestVelocity then 
         highestVelocity = d.AssemblyLinearVelocity.Magnitude
+        Highest = d
     end
     if d.AssemblyAngularVelocity.Magnitude > highestVelocity then 
         highestVelocity = d.AssemblyAngularVelocity.Magnitude
+        Highest = d
     end
 end
+print(Highest:GetFullName())
 Vehicle.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,(math.abs(highestVelocity)*-1)-50,0)
 end)
 end)
