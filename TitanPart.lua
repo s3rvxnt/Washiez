@@ -19,7 +19,7 @@ local _, dimensions =
 local volumethreshold = dimensions.X * dimensions.Y * dimensions.Z
 local function GetVan()
     local OriginalVehicle = getgenv().WashiezGetVehicle()
-    local Vehicle = OriginalVehicle
+    local Vehiclea = OriginalVehicle
     repeat
         task.wait()
         pcall(function()
@@ -43,16 +43,16 @@ local function GetVan()
         )
         repeat
             task.wait()
-            Vehicle = getgenv().WashiezGetVehicle()
-        until Vehicle ~= OriginalVehicle and Vehicle ~= nil or stop == true
-        if Vehicle ~= OriginalVehicle and Vehicle ~= nil then
-            Vehicle:WaitForChild("Chassis"):WaitForChild("VehicleSeat"):Sit(game:GetService("Players").LocalPlayer.Character.Humanoid)
+            Vehiclea = getgenv().WashiezGetVehicle()
+        until Vehiclea ~= OriginalVehicle and Vehiclea ~= nil or stop == true
+        if Vehiclea ~= OriginalVehicle and Vehiclea ~= nil then
+            Vehiclea:WaitForChild("Chassis"):WaitForChild("VehicleSeat"):Sit(game:GetService("Players").LocalPlayer.Character.Humanoid)
             repeat task.wait() until game:GetService("Players").LocalPlayer.PlayerGui.CarSelection.MainFrame.Position == UDim2.new(1, -5, 0.5, 0)
             environment.closeMenu()
         end
             end)
-    until Vehicle ~= OriginalVehicle and Vehicle ~= nil
-    return Vehicle
+    until Vehiclea ~= OriginalVehicle and Vehiclea ~= nil
+    return Vehiclea
 end
 local Vehicle = getgenv().WashiezGetVehicle()
 if Vehicle == nil then
