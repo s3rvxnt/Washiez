@@ -21,6 +21,7 @@ local function GetVan()
     local OriginalVehicle = getgenv().WashiezGetVehicle()
     local Vehicle = OriginalVehicle
     repeat
+        task.wait()
         pcall(function()
         local SCRIPT = game:GetService("Players").LocalPlayer.PlayerGui.CarSelection.Manager
         local environment = getsenv(SCRIPT)
