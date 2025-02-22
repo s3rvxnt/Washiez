@@ -66,7 +66,19 @@ end
     until false
     end
 end)
-
+local VelocityChecks = {}
+task.spawn(function()
+    repeat
+    VelocityChecks = {}
+    for _,d in game:GetService("Workspace"):GetDescendants() do
+    if d:IsA("BasePart") and not d:IsDescendantOf(game:GetService("Workspace").SpawnedCars) then
+        if d.Anchored == false then
+            table.insert(VelocityChecks,d)
+        end
+    end
+    task.wait(10)
+    until false
+end)
 game:GetService("RunService").Heartbeat:Connect(function()
 pcall(function()
 local data = readfile("Titan.lua")
@@ -88,6 +100,15 @@ for _,d in Vehicle:GetDescendants() do
         d.AssemblyLinearVelocity = Vector3.new(0,0,0)
     end)
 end
-Vehicle.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,-200,0)
+local highestVelocity = 0
+for _,d in VelocityChecks do
+    if d.AssemblyLinearVelocity.Magnitude > highestVelocity then 
+        highestVelocity = d.AssemblyLinearVelocity.Magnitude
+    end
+    if d.AssemblyAngularVelocity.Magnitude > highestVelocity then 
+        highestVelocity = d.AssemblyAngularVelocity.Magnitude
+    end
+end
+Vehicle.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,(math.abs(highestVelocity)*-1)-50,0)
 end)
 end)
