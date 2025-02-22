@@ -98,8 +98,10 @@ repeat task.wait()
 local _, dimensions = Vehicle:GetBoundingBox()
 local currentvolume = dimensions.X * dimensions.Y * dimensions.Z
 if currentvolume > volumethreshold * 4.8 or Vehicle.Parent == nil then
+    print("getting new van")
     Vehicle = GetVan()
-        Vehicle:PivotTo(CFrame.new(0,1000000,0))
+    print("got new van")
+    Vehicle:PivotTo(CFrame.new(0,1000000,0))
 end
 local data = readfile("Titan.lua")
 local data = game:GetService("HttpService"):JSONDecode(data)
