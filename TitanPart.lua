@@ -69,6 +69,8 @@ end
     end
 end)
 local VelocityChecks = {}
+repeat task.wait() until getgenv().UsernameList ~= nil
+print("debug")
 task.spawn(function()
     repeat
     VelocityChecks = {}
