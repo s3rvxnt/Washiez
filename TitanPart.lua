@@ -21,6 +21,7 @@ local function GetVan()
     local OriginalVehicle = getgenv().WashiezGetVehicle()
     local Vehicle = OriginalVehicle
     repeat
+        pcall(function()
         local SCRIPT = game:GetService("Players").LocalPlayer.PlayerGui.CarSelection.Manager
         local environment = getsenv(SCRIPT)
         environment.closeMenu()
@@ -45,6 +46,7 @@ local function GetVan()
             repeat task.wait() until game:GetService("Players").LocalPlayer.PlayerGui.CarSelection.MainFrame.Position == UDim2.new(1, -5, 0.5, 0)
             environment.closeMenu()
         end
+            end)
     until Vehicle ~= OriginalVehicle and Vehicle ~= nil
     return Vehicle
 end
