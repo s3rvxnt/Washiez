@@ -102,6 +102,7 @@ for _,d in game:GetService("Workspace").SpawnedCars:GetChildren() do
             highestVelocity = d.PrimaryPart.AssemblyAngularVelocity.Magnitude
             Highest = d
         end
+    end
 end
 for _,d in game:GetService("Players"):GetPlayers() do
     if not table.find(getgenv().UsernameList,d.Name) then
@@ -115,6 +116,7 @@ for _,d in game:GetService("Players"):GetPlayers() do
                 Highest = d
             end
         end
+    end
 end
 pcall(function() print(Highest:GetFullName()) end)
 pcall(function() print(highestVelocity:GetFullName()) end)
