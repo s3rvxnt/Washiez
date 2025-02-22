@@ -90,10 +90,14 @@ task.spawn(function()
                 if not IsFriendly then
                     print("adding: "..d:GetFullName())
                     table.insert(VelocityChecks,d)
+                else
+                    print("Is Friendly: "..d:GetFullName())
                 end
             elseif d.Anchored == false then
                 print("adding: "..d:GetFullName())
                 table.insert(VelocityChecks,d)
+            else
+                print("this works, its anchored")
             end
         end
     end
