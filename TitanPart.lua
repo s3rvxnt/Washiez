@@ -69,41 +69,6 @@ end
     end
 end)
 local VelocityChecks = {}
-repeat task.wait() until getgenv().UsernameList ~= nil
-print("debug")
-task.spawn(function()
-    repeat
-    VelocityChecks = {}
-    for _,d in game:GetService("Workspace"):GetDescendants() do
-        if d:IsA("BasePart") then --and table.find(getgenv().UsernameList,d.Parent.Name) == false then
-            local IsFriendly = false
-            if d:IsDescendantOf(game:GetService("Workspace").SpawnedCars) then
-                for i,v in game:GetService("Workspace").SpawnedCars:GetChildren() do
-                    if d:IsDescendantOf(v) then
-                        for a,b in getgenv().UsernameList do
-                            if string.find(v,b) then
-                                IsFriendly = true
-                            end
-                        end
-                    end
-                end
-                if not IsFriendly then
-                    print("adding: "..d:GetFullName())
-                    table.insert(VelocityChecks,d)
-                else
-                    print("Is Friendly: "..d:GetFullName())
-                end
-            elseif d.Anchored == false then
-                print("adding: "..d:GetFullName())
-                table.insert(VelocityChecks,d)
-            else
-                print("this works, its anchored")
-            end
-        end
-    end
-    task.wait(10)
-    until false
-end)
 game:GetService("RunService").Heartbeat:Connect(function()
 --pcall(function()
 local data = readfile("Titan.lua")
@@ -127,19 +92,32 @@ for _,d in Vehicle:GetDescendants() do
 end
 local highestVelocity = 0
 local Highest = nil
-for _,d in VelocityChecks do
-    if d.AssemblyLinearVelocity.Magnitude > highestVelocity then
-        print(d.AssemblyLinearVelocity)
-        highestVelocity = d.AssemblyLinearVelocity.Magnitude
-        Highest = d
-    end
-    if d.AssemblyAngularVelocity.Magnitude > highestVelocity then 
-        print(d.AssemblyAngularVelocity)
-        highestVelocity = d.AssemblyAngularVelocity.Magnitude
-        Highest = d
-    end
+for _,d in game:GetService("Workspace").SpawnedCars:GetChildren() do
+    if not table.find(getgenv().UsernameList,d.Name) then
+        if d.PrimaryPart.AssemblyLinearVelocity.Magnitude > highestVelocity then
+            highestVelocity = d.PrimaryPart.AssemblyLinearVelocity.Magnitude
+            Highest = d
+        end
+        if d.PrimaryPart.AssemblyAngularVelocity.Magnitude > highestVelocity then 
+            highestVelocity = d.PrimaryPart.AssemblyAngularVelocity.Magnitude
+            Highest = d
+        end
+end
+for _,d in game:GetService("Players"):GetPlayers() do
+    if not table.find(getgenv().UsernameList,d.Name) then
+        if d.Character then
+            if d.Character.PrimaryPart.AssemblyLinearVelocity.Magnitude > highestVelocity then
+                highestVelocity = d.Character.PrimaryPartAssemblyLinearVelocity.Magnitude
+                Highest = d
+            end
+            if d.Character.PrimaryPart.AssemblyAngularVelocity.Magnitude > highestVelocity then 
+                highestVelocity = d.Character.PrimaryPart.AssemblyAngularVelocity.Magnitude
+                Highest = d
+            end
+        end
 end
 pcall(function() print(Highest:GetFullName()) end)
+pcall(function() print(highestVelocity:GetFullName()) end)
 --print(Vector3.new(0,(math.abs(highestVelocity)*-1)-50,0))
 local FinalVelocity = math.clamp(math.abs(highestVelocity),10,200)
 Vehicle.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,(FinalVelocity*-1)-50,0)
