@@ -1,4 +1,5 @@
 local Mode = getgenv().Mode
+local UsernameList = getgenv().UsernameList
 local Player = game:GetService("Players").LocalPlayer
 loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/Utils"))()
 local LimbOffsets = {
@@ -71,7 +72,7 @@ task.spawn(function()
     repeat
     VelocityChecks = {}
     for _,d in game:GetService("Workspace"):GetDescendants() do
-        if d:IsA("BasePart") and d:IsDescendantOf(game:GetService("Workspace").SpawnedCars) == false and d.Parent:FindFirstChild("Humanoid") == false then
+        if d:IsA("BasePart") and d:IsDescendantOf(game:GetService("Workspace").SpawnedCars) == false and table.find(UsernameList,d.Parent.Name) == false then
             if d.Anchored == false then
                 table.insert(VelocityChecks,d)
             end
