@@ -93,14 +93,22 @@ end
 local highestVelocity = 0
 local Highest = nil
 for _,d in game:GetService("Workspace").SpawnedCars:GetChildren() do
-    if not table.find(getgenv().UsernameList,d.Name) then
-        if d.PrimaryPart.AssemblyLinearVelocity.Magnitude > highestVelocity then
-            highestVelocity = d.PrimaryPart.AssemblyLinearVelocity.Magnitude
-            Highest = d
+    local IsFriendly = false
+    for index,name in getgenv().UsernameList do
+        if string.find(d.Name,name) then
+            IsFriendly = true
         end
-        if d.PrimaryPart.AssemblyAngularVelocity.Magnitude > highestVelocity then 
-            highestVelocity = d.PrimaryPart.AssemblyAngularVelocity.Magnitude
-            Highest = d
+    end
+    if not IsFriendly then
+        if not table.find(getgenv().UsernameList,d.Name) then
+            if d.PrimaryPart.AssemblyLinearVelocity.Magnitude > highestVelocity then
+                highestVelocity = d.PrimaryPart.AssemblyLinearVelocity.Magnitude
+                Highest = d
+            end
+            if d.PrimaryPart.AssemblyAngularVelocity.Magnitude > highestVelocity then 
+                highestVelocity = d.PrimaryPart.AssemblyAngularVelocity.Magnitude
+                Highest = d
+            end
         end
     end
 end
@@ -118,7 +126,7 @@ for _,d in game:GetService("Players"):GetPlayers() do
         end
     end
 end
---pcall(function() print(Highest:GetFullName()) end)
+pcall(function() print(Highest:GetFullName()) end)
 pcall(function() print(highestVelocity) end)
 --print(Vector3.new(0,(math.abs(highestVelocity)*-1)-50,0))
 local FinalVelocity = math.clamp(math.abs(highestVelocity),10,250)
