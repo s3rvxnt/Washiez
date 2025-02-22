@@ -44,7 +44,7 @@ local function GetVan()
             repeat task.wait() until game:GetService("Players").LocalPlayer.PlayerGui.CarSelection.MainFrame.Position == UDim2.new(1, -5, 0.5, 0)
             environment.closeMenu()
         end
-    until Vehicle ~= OriginalVehicle
+    until Vehicle ~= OriginalVehicle and Vehicle ~= nil
     return Vehicle
 end
 local Vehicle = GetVan()
@@ -83,7 +83,7 @@ end
     end
 end)
 game:GetService("RunService").Heartbeat:Connect(function()
---pcall(function()
+pcall(function()
 local _, dimensions = Vehicle:GetBoundingBox()
 local currentvolume = dimensions.X * dimensions.Y * dimensions.Z
 if currentvolume > volumethreshold * 4.8 or Vehicle.Parent == nil then
@@ -139,5 +139,5 @@ pcall(function() print(highestVelocity) end)
 --print(Vector3.new(0,(math.abs(highestVelocity)*-1)-50,0))
 local FinalVelocity = math.clamp(math.abs(highestVelocity),10,150)
 Vehicle.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,(FinalVelocity*-1)-50,0)
---end)
+end)
 end)
