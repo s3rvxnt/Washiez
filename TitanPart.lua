@@ -82,33 +82,22 @@ end
     until false
     end
 end)
-local VelocityChecks = {}
 game:GetService("RunService").Heartbeat:Connect(function()
 --pcall(function()
 local _, dimensions = Vehicle:GetBoundingBox()
 local currentvolume = dimensions.X * dimensions.Y * dimensions.Z
-if currentvolume > volumethreshold * 4.8 then
+if currentvolume > volumethreshold * 4.8 or Vehicle.Parent == nil then
     Vehicle = GetVan()
 end
 local data = readfile("Titan.lua")
 local data = game:GetService("HttpService"):JSONDecode(data)
-for _,d in Vehicle:GetDescendants() do 
-    pcall(function()
-        d.AssemblyAngularVelocity = Vector3.new(0,0,0)
-        d.AssemblyLinearVelocity = Vector3.new(0,0,0)
-    end)
-end
 local temp = Mode 
 if string.find(Mode,"Torso") then 
 temp = "Torso"
 end
 Vehicle:PivotTo(CFrame.new(unpack(data[temp]))*LimbOffsets[Mode])
-for _,d in Vehicle:GetDescendants() do 
-    pcall(function()
-        d.AssemblyAngularVelocity = Vector3.new(0,0,0)
-        d.AssemblyLinearVelocity = Vector3.new(0,0,0)
-    end)
-end
+Vehicle.PrimaryPart.AssemblyAngularVelocity = Vector3.new(0,0,0)
+Vehicle.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,0,0)
 local highestVelocity = 0
 local Highest = nil
 for _,d in game:GetService("Workspace").SpawnedCars:GetChildren() do
