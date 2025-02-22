@@ -72,7 +72,7 @@ task.spawn(function()
     repeat
     VelocityChecks = {}
     for _,d in game:GetService("Workspace"):GetDescendants() do
-        if d:IsA("BasePart") and d:IsDescendantOf(game:GetService("Workspace").SpawnedCars) == false and table.find(UsernameList,d.Parent.Name) == false then
+        if d:IsA("BasePart") and d:IsDescendantOf(game:GetService("Workspace").SpawnedCars) == false and table.find(getgenv().UsernameList,d.Parent.Name) == false then
             if d.Anchored == false then
                 table.insert(VelocityChecks,d)
             end
