@@ -23,6 +23,7 @@ local function GetVan()
     repeat
         task.wait()
         pcall(function()
+        game:GetService("Players").LocalPlayer.Character:PivotTo(CFrame.new(0,100000,0))
         local SCRIPT = game:GetService("Players").LocalPlayer.PlayerGui.CarSelection.Manager
         local environment = getsenv(SCRIPT)
         environment.closeMenu()
