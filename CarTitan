@@ -362,42 +362,46 @@ if #AccountsUpdated <= 7 then
                 Accounts = HttpService:JSONDecode(Accounts)
                 end)
             until success
-        ExecutionListing = {}
+        local ExecutionListing = {}
+        local UsernameList = {}
+        for _,account in Accounts do
+            table.insert(UsernameList,account[1])
+        end
         for _,account in Accounts do
             if account[1] == Player.Name then
-                table.insert(ExecutionListing,{Player.Name,{tick(),[[loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/TitanController.lua"))()]]}, true})
+                table.insert(ExecutionListing,{Player.Name,{tick(),[[loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/TitanController.lua"))()]]}, true,UsernameList})
             else
                 BodyPartCount = BodyPartCount+1
                 if BodyPartCount == 1 then
                     table.insert(ExecutionListing,{account[1],{tick(),[[
                         getgenv().Mode = "TorsoLeft" -- Head, TorsoLeft, TorsoRight, LeftArm, RightArm, LeftLeg, RightLeg
                         loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/TitanPart.lua"))()
-                    ]]}, true})
+                    ]]}, true,UsernameList})
                 elseif BodyPartCount == 2 then
                     table.insert(ExecutionListing,{account[1],{tick(),[[
                         getgenv().Mode = "TorsoRight" -- Head, TorsoLeft, TorsoRight, LeftArm, RightArm, LeftLeg, RightLeg
                         loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/TitanPart.lua"))()
-                    ]]}, true})
+                    ]]}, true,UsernameList})
                 elseif BodyPartCount == 3 then
                     table.insert(ExecutionListing,{account[1],{tick(),[[
                         getgenv().Mode = "LeftArm" -- Head, TorsoLeft, TorsoRight, LeftArm, RightArm, LeftLeg, RightLeg
                         loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/TitanPart.lua"))()
-                    ]]}, true})
+                    ]]}, true,UsernameList})
                 elseif BodyPartCount == 4 then
                     table.insert(ExecutionListing,{account[1],{tick(),[[
                         getgenv().Mode = "RightArm" -- Head, TorsoLeft, TorsoRight, LeftArm, RightArm, LeftLeg, RightLeg
                         loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/TitanPart.lua"))()
-                    ]]}, true})
+                    ]]}, true,UsernameList})
                 elseif BodyPartCount == 5 then
                     table.insert(ExecutionListing,{account[1],{tick(),[[
                         getgenv().Mode = "LeftLeg" -- Head, TorsoLeft, TorsoRight, LeftArm, RightArm, LeftLeg, RightLeg
                         loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/TitanPart.lua"))()
-                    ]]}, true})
+                    ]]}, true,UsernameList})
                 elseif BodyPartCount == 6 then
                     table.insert(ExecutionListing,{account[1],{tick(),[[
                         getgenv().Mode = "RightLeg" -- Head, TorsoLeft, TorsoRight, LeftArm, RightArm, LeftLeg, RightLeg
                         loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/TitanPart.lua"))()
-                    ]]}, true})
+                    ]]}, true,UsernameList})
                 end
             end
         end
