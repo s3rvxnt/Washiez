@@ -1,6 +1,7 @@
 local Mode = getgenv().Mode
 local UsernameList = getgenv().UsernameList
 local Player = game:GetService("Players").LocalPlayer
+Player.PlayerScripts:ClearAllChildren()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/Utils"))()
 local LimbOffsets = {
     Head = CFrame.Angles(math.rad(-90),0,math.rad(180)) * CFrame.new(0,-4.5,-7),
@@ -96,7 +97,7 @@ task.spawn(function()
     until false
 end)
 game:GetService("RunService").Heartbeat:Connect(function()
-pcall(function()
+--pcall(function()
 local data = readfile("Titan.lua")
 local data = game:GetService("HttpService"):JSONDecode(data)
 for _,d in Vehicle:GetDescendants() do 
@@ -132,5 +133,5 @@ print(Highest:GetFullName())
 print(Vector3.new(0,(math.abs(highestVelocity)*-1)-50,0))
 local FinalVelocity = math.clamp(math.abs(highestVelocity),10,200)
 Vehicle.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,(FinalVelocity*-1)-50,0)
-end)
+--end)
 end)
