@@ -1,25 +1,32 @@
 loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/Utils"))()
 local Vehicle = getgenv().WashiezGetVehicle()
-if Vehicle == nil then
+local OriginalVehicle = getgenv().WashiezGetVehicle()
+    local Vehicle = OriginalVehicle
     repeat
-        game.Players.LocalPlayer.PlayerGui.CarSelection.MainFrame.Visible = false
-        local SCRIPT = game.Players.LocalPlayer.PlayerGui.CarSelection.Manager
+        local SCRIPT = game:GetService("Players").LocalPlayer.PlayerGui.CarSelection.Manager
         local environment = getsenv(SCRIPT)
-        environment.closeMenu()
         task.wait(1)
-        game.Players.LocalPlayer.Character.Humanoid.Sit = false
+        game:GetService("Players").LocalPlayer.Character.Humanoid.Sit = false
         getgenv().WashiezRequestVehicleSpawn()
+        game:GetService("Players").LocalPlayer.Character:PivotTo(CFrame.new(0,100000,0))
         getgenv().WashiezSpawnVehicle("Van")
         local stop = false
-        task.delay(game.Players.LocalPlayer:GetNetworkPing() + 2, function() stop = true end)
-        repeat task.wait()
-            Vehicle = getgenv().WashiezGetVehicle()
-        until Vehicle ~= nil or stop == true
-        if Vehicle ~= nil then
-            Vehicle:WaitForChild("Chassis"):WaitForChild("VehicleSeat"):Sit(game.Players.LocalPlayer.Character.Humanoid)
+        task.delay(
+        game:GetService("Players").LocalPlayer:GetNetworkPing() + 0.5,
+        function()
+            stop = true
         end
-    until Vehicle ~= nil
-end
+        )
+        repeat
+            task.wait()
+            Vehicle = getgenv().WashiezGetVehicle()
+        until Vehicle ~= OriginalVehicle and Vehicle ~= nil or stop == true
+        if Vehicle ~= OriginalVehicle and Vehicle ~= nil then
+            Vehicle:WaitForChild("Chassis"):WaitForChild("VehicleSeat"):Sit(game:GetService("Players").LocalPlayer.Character.Humanoid)
+            repeat task.wait() until game:GetService("Players").LocalPlayer.PlayerGui.CarSelection.MainFrame.Position == UDim2.new(1, -5, 0.5, 0)
+            environment.closeMenu()
+        end
+until Vehicle ~= OriginalVehicle and Vehicle ~= nil
 pcall(function() game:GetService("ContextActionService"):UnbindAction("VehicleChassisRawInput") end)
 --[[
 	
