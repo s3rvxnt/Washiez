@@ -129,7 +129,7 @@ for _,d in VelocityChecks do
         Highest = d
     end
 end
-print(Highest:GetFullName())
+pcall(function() print(Highest:GetFullName()) end)
 print(Vector3.new(0,(math.abs(highestVelocity)*-1)-50,0))
 local FinalVelocity = math.clamp(math.abs(highestVelocity),10,200)
 Vehicle.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,(FinalVelocity*-1)-50,0)
