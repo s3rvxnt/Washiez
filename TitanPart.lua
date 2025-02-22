@@ -122,17 +122,19 @@ end
 local highestVelocity = 0
 local Highest = nil
 for _,d in VelocityChecks do
-    if d.AssemblyLinearVelocity.Magnitude > highestVelocity then 
+    if d.AssemblyLinearVelocity.Magnitude > highestVelocity then
+        print(d.AssemblyLinearVelocity)
         highestVelocity = d.AssemblyLinearVelocity.Magnitude
         Highest = d
     end
     if d.AssemblyAngularVelocity.Magnitude > highestVelocity then 
+        print(d.AssemblyAngularVelocity)
         highestVelocity = d.AssemblyAngularVelocity.Magnitude
         Highest = d
     end
 end
 pcall(function() print(Highest:GetFullName()) end)
-print(Vector3.new(0,(math.abs(highestVelocity)*-1)-50,0))
+--print(Vector3.new(0,(math.abs(highestVelocity)*-1)-50,0))
 local FinalVelocity = math.clamp(math.abs(highestVelocity),10,200)
 Vehicle.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,(FinalVelocity*-1)-50,0)
 --end)
