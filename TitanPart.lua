@@ -88,6 +88,6 @@ for _,d in Vehicle:GetDescendants() do
         d.AssemblyLinearVelocity = Vector3.new(0,0,0)
     end)
 end
-Vehicle.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,-100,0)
+Vehicle.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,-300,0)
 end)
 end)
