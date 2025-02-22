@@ -12,28 +12,42 @@ local LimbOffsets = {
     RightLeg = CFrame.Angles(math.rad(-90),0,0) * CFrame.new(0,-3,-1.5),
     LeftLeg = CFrame.Angles(math.rad(-90),0,0) * CFrame.new(0,-3,-1.5)
 }
+local _, dimensions =
+    game:GetService("ReplicatedStorage"):WaitForChild("CarSpawnSystem"):WaitForChild("CarModels"):WaitForChild("Van"):GetBoundingBox(
 
-local Vehicle = getgenv().WashiezGetVehicle()
-if Vehicle == nil then
+)
+local volumethreshold = dimensions.X * dimensions.Y * dimensions.Z
+local function GetVan()
+    local OriginalVehicle = getgenv().WashiezGetVehicle()
+    local Vehicle = OriginalVehicle
     repeat
-        Player.PlayerGui.CarSelection.MainFrame.Visible = false
-        local SCRIPT = Player.PlayerGui.CarSelection.Manager
+        local SCRIPT = game:GetService("Players").LocalPlayer.PlayerGui.CarSelection.Manager
         local environment = getsenv(SCRIPT)
-        environment.closeMenu()
         task.wait(1)
-        Player.Character.Humanoid.Sit = false
+        game:GetService("Players").LocalPlayer.Character.Humanoid.Sit = false
         getgenv().WashiezRequestVehicleSpawn()
-        getgenv().WashiezSpawnVehicle("Van")
+        game:GetService("Players").LocalPlayer.Character:PivotTo(0,100000,0)
+        getgenv().WashiezSpawnVehicle("SUV")
         local stop = false
-        task.delay(Player:GetNetworkPing() + 2, function() stop = true end)
-        repeat task.wait()
-            Vehicle = getgenv().WashiezGetVehicle()
-        until Vehicle ~= nil or stop == true
-        if Vehicle ~= nil then
-            Vehicle:WaitForChild("Chassis"):WaitForChild("VehicleSeat"):Sit(Player.Character.Humanoid)
+        task.delay(
+        game:GetService("Players").LocalPlayer:GetNetworkPing() + 0.5,
+        function()
+            stop = true
         end
-    until Vehicle ~= nil
+        )
+        repeat
+            task.wait()
+            Vehicle = getgenv().WashiezGetVehicle()
+        until Vehicle ~= OriginalVehicle and Vehicle ~= nil or stop == true
+        if Vehicle ~= OriginalVehicle and Vehicle ~= nil then
+            Vehicle:WaitForChild("Chassis"):WaitForChild("VehicleSeat"):Sit(game:GetService("Players").LocalPlayer.Character.Humanoid)
+            repeat task.wait() until game:GetService("Players").LocalPlayer.PlayerGui.CarSelection.MainFrame.Position == UDim2.new(1, -5, 0.5, 0)
+            environment.closeMenu()
+        end
+    until Vehicle ~= OriginalVehicle
+    return Vehicle
 end
+local Vehicle = GetVan()
 
 game:GetService("Workspace").DescendantAdded:Connect(function(obj)
     pcall(function()
@@ -71,6 +85,11 @@ end)
 local VelocityChecks = {}
 game:GetService("RunService").Heartbeat:Connect(function()
 --pcall(function()
+local _, dimensions = Vehicle:GetBoundingBox()
+local currentvolume = dimensions.X * dimensions.Y * dimensions.Z
+if currentvolume > volumethreshold * 4.8 then
+    Vehicle = GetVan()
+end
 local data = readfile("Titan.lua")
 local data = game:GetService("HttpService"):JSONDecode(data)
 for _,d in Vehicle:GetDescendants() do 
@@ -129,7 +148,7 @@ end
 pcall(function() print(Highest:GetFullName()) end)
 pcall(function() print(highestVelocity) end)
 --print(Vector3.new(0,(math.abs(highestVelocity)*-1)-50,0))
-local FinalVelocity = math.clamp(math.abs(highestVelocity),10,200)
-Vehicle.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,(FinalVelocity*-1)-100,0)
+local FinalVelocity = math.clamp(math.abs(highestVelocity),10,150)
+Vehicle.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,(FinalVelocity*-1)-50,0)
 --end)
 end)
