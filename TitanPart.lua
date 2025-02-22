@@ -68,6 +68,11 @@ end
     until false
     end
 end)
+repeat task.wait() until getgenv().UsernameList ~= nil
+for i,v in getgenv().UsernameList do
+    print(i,v)
+end
+task.wait(30)
 local VelocityChecks = {}
 game:GetService("RunService").Heartbeat:Connect(function()
 --pcall(function()
@@ -118,8 +123,8 @@ for _,d in game:GetService("Players"):GetPlayers() do
         end
     end
 end
-pcall(function() print(Highest:GetFullName()) end)
-pcall(function() print(highestVelocity:GetFullName()) end)
+--pcall(function() print(Highest:GetFullName()) end)
+pcall(function() print(highestVelocity) end)
 --print(Vector3.new(0,(math.abs(highestVelocity)*-1)-50,0))
 local FinalVelocity = math.clamp(math.abs(highestVelocity),10,200)
 Vehicle.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,(FinalVelocity*-1)-50,0)
