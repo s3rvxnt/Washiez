@@ -23,6 +23,7 @@ local function GetVan()
     repeat
         local SCRIPT = game:GetService("Players").LocalPlayer.PlayerGui.CarSelection.Manager
         local environment = getsenv(SCRIPT)
+        environment.closeMenu()
         task.wait(1)
         game:GetService("Players").LocalPlayer.Character.Humanoid.Sit = false
         getgenv().WashiezRequestVehicleSpawn()
