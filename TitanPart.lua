@@ -115,6 +115,7 @@ for _,d in VelocityChecks do
     end
 end
 print(Highest:GetFullName())
+print(Vector3.new(0,(math.abs(highestVelocity)*-1)-50,0))
 Vehicle.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,(math.abs(highestVelocity)*-1)-50,0)
 end)
 end)
