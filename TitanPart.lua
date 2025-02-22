@@ -145,8 +145,8 @@ for _,d in game:GetService("Players"):GetPlayers() do
         end
     end
 end
-pcall(function() print(Highest:GetFullName()) end)
-pcall(function() print(highestVelocity) end)
+--pcall(function() print(Highest:GetFullName()) end)
+--pcall(function() print(highestVelocity) end)
 --print(Vector3.new(0,(math.abs(highestVelocity)*-1)-50,0))
 local FinalVelocity = math.clamp(highestVelocity,50,1500)
 Vehicle.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,(FinalVelocity*-1)-200,0)
