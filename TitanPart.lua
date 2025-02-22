@@ -54,9 +54,9 @@ local function GetVan()
     until Vehiclea ~= OriginalVehicle and Vehiclea ~= nil
     return Vehiclea
 end
-local Vehicle = getgenv().WashiezGetVehicle()
+_G.Vehicle = getgenv().WashiezGetVehicle()
 if Vehicle == nil then
-    Vehicle = GetVan()
+    _G.Vehicle = GetVan()
 end
 
 game:GetService("Workspace").DescendantAdded:Connect(function(obj)
@@ -93,11 +93,11 @@ end
     end
 end)
 repeat task.wait()
-pcall(function()
+--pcall(function()
 local _, dimensions = Vehicle:GetBoundingBox()
 local currentvolume = dimensions.X * dimensions.Y * dimensions.Z
 if currentvolume > volumethreshold * 4.8 or Vehicle.Parent == nil then
-                        Vehicle = GetVan()
+    _G.Vehicle = GetVan()
 end
 local data = readfile("Titan.lua")
 local data = game:GetService("HttpService"):JSONDecode(data)
@@ -105,9 +105,9 @@ local temp = Mode
 if string.find(Mode,"Torso") then 
 temp = "Torso"
 end
-Vehicle:PivotTo(CFrame.new(unpack(data[temp]))*LimbOffsets[Mode])
-Vehicle.PrimaryPart.AssemblyAngularVelocity = Vector3.new(0,0,0)
-Vehicle.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,0,0)
+_G.Vehicle:PivotTo(CFrame.new(unpack(data[temp]))*LimbOffsets[Mode])
+_G.Vehicle.PrimaryPart.AssemblyAngularVelocity = Vector3.new(0,0,0)
+_G.Vehicle.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,0,0)
 local highestVelocity = 0
 local Highest = nil
 for _,d in game:GetService("Workspace").SpawnedCars:GetChildren() do
@@ -148,6 +148,6 @@ pcall(function() print(Highest:GetFullName()) end)
 pcall(function() print(highestVelocity) end)
 --print(Vector3.new(0,(math.abs(highestVelocity)*-1)-50,0))
 local FinalVelocity = math.clamp(highestVelocity,50,1500)
-Vehicle.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,(FinalVelocity*-1)-200,0)
-                end)
+_G.Vehicle.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,(FinalVelocity*-1)-200,0)
+                --end)
 until false
