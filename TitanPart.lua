@@ -26,7 +26,7 @@ local function GetVan()
         task.wait(1)
         game:GetService("Players").LocalPlayer.Character.Humanoid.Sit = false
         getgenv().WashiezRequestVehicleSpawn()
-        game:GetService("Players").LocalPlayer.Character:PivotTo(0,100000,0)
+        game:GetService("Players").LocalPlayer.Character:PivotTo(CFrame.new(0,100000,0))
         getgenv().WashiezSpawnVehicle("Van")
         local stop = false
         task.delay(
