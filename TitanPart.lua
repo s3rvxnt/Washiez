@@ -47,7 +47,10 @@ local function GetVan()
     until Vehicle ~= OriginalVehicle and Vehicle ~= nil
     return Vehicle
 end
-local Vehicle = GetVan()
+local Vehicle = getgenv().WashiezGetVehicle()
+if Vehicle == nil then
+    Vehicle = GetVan()
+end
 
 game:GetService("Workspace").DescendantAdded:Connect(function(obj)
     pcall(function()
