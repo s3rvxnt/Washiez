@@ -28,12 +28,15 @@ local function GetVan()
         environment.closeMenu()
         task.wait(1)
         game:GetService("Players").LocalPlayer.Character.Humanoid.Sit = false
+        task.wait(game:GetService("Players").LocalPlayer:GetNetworkPing())
+        game:GetService("Players").LocalPlayer.Character:PivotTo(CFrame.new(0,100000,0))
+        task.wait(2)
         getgenv().WashiezRequestVehicleSpawn()
         game:GetService("Players").LocalPlayer.Character:PivotTo(CFrame.new(0,100000,0))
         getgenv().WashiezSpawnVehicle("Van")
         local stop = false
         task.delay(
-        game:GetService("Players").LocalPlayer:GetNetworkPing() + 0.5,
+        game:GetService("Players").LocalPlayer:GetNetworkPing() + 2,
         function()
             stop = true
         end
@@ -95,7 +98,6 @@ local _, dimensions = Vehicle:GetBoundingBox()
 local currentvolume = dimensions.X * dimensions.Y * dimensions.Z
 if currentvolume > volumethreshold * 4.8 or Vehicle.Parent == nil then
                         Vehicle = GetVan()
-                        correcting = false
 end
 local data = readfile("Titan.lua")
 local data = game:GetService("HttpService"):JSONDecode(data)
