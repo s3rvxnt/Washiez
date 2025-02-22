@@ -108,7 +108,7 @@ for _,d in game:GetService("Players"):GetPlayers() do
     if not table.find(getgenv().UsernameList,d.Name) then
         if d.Character then
             if d.Character.PrimaryPart.AssemblyLinearVelocity.Magnitude > highestVelocity then
-                highestVelocity = d.Character.PrimaryPartAssemblyLinearVelocity.Magnitude
+                highestVelocity = d.Character.PrimaryPart.AssemblyLinearVelocity.Magnitude
                 Highest = d
             end
             if d.Character.PrimaryPart.AssemblyAngularVelocity.Magnitude > highestVelocity then 
