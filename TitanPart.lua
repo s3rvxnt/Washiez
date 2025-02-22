@@ -75,7 +75,7 @@ task.spawn(function()
     repeat
     VelocityChecks = {}
     for _,d in game:GetService("Workspace"):GetDescendants() do
-        if d:IsA("BasePart") and table.find(getgenv().UsernameList,d.Parent.Name) == false then
+        if d:IsA("BasePart") then --and table.find(getgenv().UsernameList,d.Parent.Name) == false then
             local IsFriendly = false
             if d:IsDescendantOf(game:GetService("Workspace").SpawnedCars) then
                 for i,v in game:GetService("Workspace").SpawnedCars:GetChildren() do
