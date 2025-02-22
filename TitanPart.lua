@@ -86,12 +86,16 @@ end
     until false
     end
 end)
+local correcting = false
 game:GetService("RunService").Heartbeat:Connect(function()
 pcall(function()
+if not correcting then
 local _, dimensions = Vehicle:GetBoundingBox()
 local currentvolume = dimensions.X * dimensions.Y * dimensions.Z
 if currentvolume > volumethreshold * 4.8 or Vehicle.Parent == nil then
-    Vehicle = GetVan()
+    correcting = true
+                        Vehicle = GetVan()
+                        correcting = false
 end
 local data = readfile("Titan.lua")
 local data = game:GetService("HttpService"):JSONDecode(data)
@@ -143,5 +147,6 @@ pcall(function() print(highestVelocity) end)
 --print(Vector3.new(0,(math.abs(highestVelocity)*-1)-50,0))
 local FinalVelocity = math.clamp(highestVelocity,10,300)
 Vehicle.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,(FinalVelocity*-1)-100,0)
-end)
+                end
+                end)
 end)
