@@ -75,7 +75,7 @@ task.spawn(function()
         if d:IsA("BasePart") and table.find(getgenv().UsernameList,d.Parent.Name) == false then
             local IsFriendly = false
             if d:IsDescendantOf(game:GetService("Workspace").SpawnedCars) then
-                for i,v in game:GetService("Workspace").SpawnedCars:GetChildren()
+                for i,v in game:GetService("Workspace").SpawnedCars:GetChildren() do
                     if d:IsDescendantOf(v) then
                         for a,b in getgenv().UsernameList do
                             if string.find(v,b) then
@@ -131,6 +131,6 @@ end
 print(Highest:GetFullName())
 print(Vector3.new(0,(math.abs(highestVelocity)*-1)-50,0))
 local FinalVelocity = math.clamp(math.abs(highestVelocity),10,200)
-Vehicle.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,FinalVelocity*-1)-50,0)
+Vehicle.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,(FinalVelocity*-1)-50,0)
 end)
 end)
