@@ -1069,7 +1069,8 @@ task.spawn(function()
 	
 end)
 game.Players.LocalPlayer.Character = tbl.Rig
-_G.Titan = tbl.Rig
+getgenv().Titan = tbl.Rig
+	
 game:GetService("Workspace").CurrentCamera.CameraSubject = tbl.Humanoid
 local HttpService = game:GetService("HttpService")
 
