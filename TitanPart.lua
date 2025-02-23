@@ -135,9 +135,15 @@ repeat
             if currentvolume > volumethreshold * 4.8 or Vehicle.Parent == nil then
                 Vehicle = GetVan()
             end
-            getgenv().WashiezGetVehicle():WaitForChild("Chassis"):WaitForChild("VehicleSeat"):Sit(
-                game:GetService("Players").LocalPlayer.Character.Humanoid
+            if getgenv().Titan ~= nil then
+            getgenv().WashiezGetVehicle().Chassis.VehicleSeat:Sit(
+                game:GetService("Workspace"):WaitForChild(Player.Name,math.huge)
             )
+            else
+            getgenv().WashiezGetVehicle().Chassis.VehicleSeat:Sit(
+                Player.Character.Humanoid
+            )
+            end
             local data = readfile("Titan.lua")
             local data = game:GetService("HttpService"):JSONDecode(data)
             local temp = Mode
