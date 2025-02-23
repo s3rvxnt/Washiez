@@ -39,10 +39,13 @@ local function GetVan()
         task.wait()
     until game:GetService("Players").LocalPlayer.PlayerGui.CarSelection.MainFrame.Position ==
         UDim2.new(1.20000005, 30, 0.5, 0)
-    getgenv().WashiezRequestVehicleSpawn()
     local stop = false
     repeat
         task.wait()
+        if game:GetService("Players").LocalPlayer.PlayerGui.CarSelection.MainFrame.Position ~=
+        UDim2.new(1.20000005, 30, 0.5, 0) then
+            getgenv().WashiezRequestVehicleSpawn()
+        end
         getgenv().WashiezSpawnVehicle("Van")
         for _, v in Character:GetChildren() do
             pcall(
