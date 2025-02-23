@@ -18,6 +18,9 @@ local _, dimensions =
 )
 local volumethreshold = dimensions.X * dimensions.Y * dimensions.Z
 local function GetVan()
+    if getgenv().Titan ~= nil then
+        Player.Character = game:GetService("Workspace"):WaitForChild(Player.Name,math.huge)
+    end
     local OriginalVehicle = getgenv().WashiezGetVehicle()
     local Character = Player.Character or Player.CharacterAdded:Wait()
     Character:WaitForChild("Humanoid").Sit = false
@@ -60,6 +63,9 @@ local function GetVan()
     getgenv().WashiezGetVehicle():WaitForChild("Chassis"):WaitForChild("VehicleSeat"):Sit(
         game:GetService("Players").LocalPlayer.Character.Humanoid
     )
+    if getgenv().Titan ~= nil then
+        Player.Character = getgenv().Titan
+    end
     return getgenv().WashiezGetVehicle()
 end
 local Vehicle = getgenv().WashiezGetVehicle()
