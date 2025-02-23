@@ -42,7 +42,7 @@ local function GetVan()
     local stop = false
     repeat
         task.wait()
-        if game:GetService("Players").LocalPlayer.PlayerGui.CarSelection.MainFrame.Position ~=
+        if game:GetService("Players").LocalPlayer.PlayerGui.CarSelection.MainFrame.Position ==
         UDim2.new(1.20000005, 30, 0.5, 0) then
             getgenv().WashiezRequestVehicleSpawn()
         end
