@@ -24,9 +24,46 @@ getgenv().SuperStep = function(payload)
     return Connections
 end
 
-getgenv().WashiezGetVehicle = function()
+getgenv().GetVehicleOwner = function(Vehicle)
+	local name = string.split(Vehicle.Name,"-")
+	return name[1]
+end
+
+getgenv().GetVehicleName = function(Vehicle)
+	local name = string.split(Vehicle.Name,"-")
+	return name[2]
+end
+
+local LoadList = {
+["SUV"] = 461,
+["Striped SUV"] = 471,
+["Van"] = 343,
+["Striped Van"] = 355,
+["Jeep"] = 410,
+["Sedan"] = 419,
+["Camo Jeep"] = 451,
+["Striped Sedan"] = 460,
+["Pickup Truck"] = 437,
+["Foiled Pickup Truck"] = 449,
+["Dune Buggy"] = 335,
+["Camo Dune Buggy"] = 345,
+["Sports Car"] = 335,
+["Striped Sports Car"] = 338,
+["Painted Sports Car"] = 430,
+["Supercar"] = 386,
+["Striped Supercar"] = 391,
+["Police Car"] = 517
+}
+
+getgenv().WaitForVehicleToLoad = function(Vehicle)
+	local Target = LoadList[getgenv().GetVehicleName(Vehicle)]
+	repeat task.wait() until #Vehicle:GetDescendants() >= Target
+end
+
+getgenv().WashiezGetVehicle = function(target)
+    target = target or Player
     for _, vehicle in Workspace.SpawnedCars:GetChildren() do
-        if string.find(vehicle.Name, Player.Name) then
+        if string.find(vehicle.Name, target.Name) then
             return vehicle
         end
     end
@@ -52,11 +89,16 @@ getgenv().WashiezRequestVehicleSpawn = function()
     if furthestSpawner then
         Character.Animate.Disabled = true
 
-        repeat
-            task.wait()
+        local Connections = getgenv().SuperStep(function()
             Character:PivotTo(furthestSpawner.CarSpawner.Screen.CFrame)
+            Character.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,0,0)
+            Character.PrimaryPart.AssemblyAngularVelocity = Vector3.new(0,0,0)
             fireproximityprompt(furthestSpawner.CarSpawner.Screen.CarSystem)
-         until Player.PlayerGui.CarSelection.MainFrame.Position ~= UDim2.new(1.2, 30, 0.5, 0)
+	end)
+        repeat task.wait() until Player.PlayerGui.CarSelection.MainFrame.Position ~= UDim2.new(1.2, 30, 0.5, 0)
+        for _, connection in Connections do
+	    connection:Disconnect()
+	end
 
         Character.Animate.Disabled = false
         Character:PivotTo(originalCFrame)
