@@ -1,0 +1,90 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+
+-- Configuration
+local CHECKPOINTS_FOLDER = Workspace:WaitForChild("ObbyCheckpoints"):WaitForChild("NatureObby")
+local START_PORTAL = Workspace:WaitForChild("Portals"):WaitForChild("Portals"):WaitForChild("NatureObbyPortal"):WaitForChild("Teleport")
+local OBBY_REMOTE = ReplicatedStorage:WaitForChild("MiscRemotes"):WaitForChild("ObbyUI")
+local FINISH_POSITION = Vector3.new(344, 5, -126)
+local FINISH_RADIUS = 50
+
+local localPlayer = Players.LocalPlayer
+local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
+
+-- Connection management for velocity stabilization
+local function createStepConnections(payload)
+    local connections = {}
+    local events = {
+        "Heartbeat", "PostSimulation", "PreAnimation",
+        "PreRender", "PreSimulation", "RenderStepped", "Stepped"
+    }
+    
+    for _, event in ipairs(events) do
+        connections[event] = RunService[event]:Connect(payload)
+    end
+    return connections
+end
+
+-- Stabilize character movement
+task.spawn(function()
+    createStepConnections(function()
+        pcall(function()
+            local rootPart = character.PrimaryPart
+            if rootPart then
+                rootPart.AssemblyAngularVelocity = Vector3.zero
+                rootPart.AssemblyLinearVelocity = Vector3.zero
+            end
+        end)
+    end)
+end)
+
+-- Main obby automation loop
+while true do
+    -- Activate start portal
+    firetouchinterest(START_PORTAL, character.PrimaryPart, 1)
+    task.wait(localPlayer:GetNetworkPing() + 0.05)
+    firetouchinterest(START_PORTAL, character.PrimaryPart, 0)
+
+    local checkpointsPassed = false
+    local timeout = false
+    
+    -- Setup timeout safety
+    task.delay(localPlayer:GetNetworkPing() + 2, function()
+        timeout = true
+    end)
+
+    -- Checkpoint collection loop
+    repeat
+        task.wait()
+        checkpointsPassed = true
+        local checkpoints = CHECKPOINTS_FOLDER:GetChildren()
+        
+        -- Sort checkpoints by their number attribute
+        table.sort(checkpoints, function(a, b)
+            return a:GetAttribute("Number") < b:GetAttribute("Number")
+        end)
+
+        for _, checkpoint in ipairs(checkpoints) do
+            local cylinder = checkpoint:WaitForChild("Cylinder")
+            if cylinder.BrickColor.Name == "Fire Yellow" then
+                checkpointsPassed = false
+                firetouchinterest(cylinder, character.PrimaryPart, 1)
+                task.wait()
+                firetouchinterest(cylinder, character.PrimaryPart, 0)
+            end
+        end
+    until (localPlayer.plrStats.Obbies.NatureObby.Progress.Value == #checkpoints and checkpointsPassed) 
+        or (checkpointsPassed and timeout and localPlayer.plrStats.Obbies.NatureObby.Progress.Value == 0)
+
+    -- Handle failed attempt
+    if checkpointsPassed and localPlayer.plrStats.Obbies.NatureObby.Progress.Value == 0 then
+        OBBY_REMOTE:FireServer('Exit', "NatureObby")
+    end
+
+    -- Wait for return to finish area
+    repeat
+        task.wait()
+    until (character.PrimaryPart.Position - FINISH_POSITION).Magnitude <= FINISH_RADIUS
+end
