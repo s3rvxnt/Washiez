@@ -1,0 +1,160 @@
+--Washiez Game State reinitializer--
+loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/Utils"))()
+local Vehicle = nil
+local CurrentVehicle = "nil"
+local CurrentVehicleCFrame = "nil"
+local CurrentVehicleOperatingStatus = "false"
+local CharacterCFrame = "nil"
+local LastAppropriateCFrame = "nil"
+local Workspace = game:GetService("Workspace")
+local Cars = Workspace:WaitForChild("SpawnedCars")
+local LocalPlayer = game:GetService("Players").LocalPlayer
+
+LocalPlayer.CharacterAdded:Connect(function(Character)
+    local HealthWatcher
+    HealthWatcher = Character:WaitForChild("Humanoid"):GetPropertyChangedSignal("Health"):Connect(function()
+        if Character.Humanoid.Health == 0 then
+            HealthWatcher:Disconnect()
+            LastAppropriateCFrame = "CFrame.new("..tostring(Character.PrimaryPart.CFrame)..")"
+        end
+    end)
+end)
+
+Cars.ChildAdded:Connect(function(car)
+    if getgenv().GetVehicleOwner(car) == LocalPlayer.Name then
+        CurrentVehicle = getgenv().GetVehicleName(car)
+        Vehicle = car
+        local OperatingWatcher
+        OperatingWatcher = car:WaitForChild("Chassis"):WaitForChild("VehicleSeat"):GetPropertyChangedSignal("Occupant"):Connect(function()
+            if car.Chassis.VehicleSeat.Occupant == nil then
+                CurrentVehicleOperatingStatus = "false"
+            else
+                CurrentVehicleOperatingStatus = "true"
+            end
+        end)
+        local ParentWatcher
+        ParentWatcher = car:GetPropertyChangedSignal("Parent"):Connect(function()
+            if car.Parent == nil then
+                ParentWatcher:Disconnect()
+                CurrentVehicleOperatingStatus = "false"
+                CurrentVehicle = "nil"
+                CurrentVehicleCFrame = "nil"
+                Vehicle = nil
+            end
+        end)
+    end
+end)
+
+LocalPlayer:WaitForChild("Warnings"):WaitForChild("WarningNumber"):GetPropertyChangedSignal("Value"):Once(function()
+    LocalPlayer:Kick()
+end)
+
+repeat task.wait() until LocalPlayer:GetNetworkPing() <= 0 or game:GetService("CoreGui"):WaitForChild("RobloxPromptGui"):WaitForChild("promptOverlay"):FindFirstChild("ErrorPrompt", true)
+task.wait(0.1)
+if LocalPlayer:GetNetworkPing() <= 0 or game:GetService("CoreGui"):WaitForChild("RobloxPromptGui"):WaitForChild("promptOverlay"):FindFirstChild("ErrorPrompt", true) then
+    local WasDead = "true"
+    if LocalPlayer.Character then
+        CharacterCFrame = "CFrame.new("..tostring(LocalPlayer.Character.PrimaryPart.CFrame)..")"
+        if LocalPlayer.Character:WaitForChild("Humanoid").health > 0 then
+            WasDead = "false"
+        end
+    end
+    if Vehicle ~= nil then
+        CurrentVehicleCFrame = "CFrame.new("..tostring(Vehicle.PrimaryPart.CFrame)..")"
+    end
+    local CameraCFrame = "CFrame.new("..tostring(Workspace.CurrentCamera.CFrame)..")"
+    local CameraFocus = "CFrame.new("..tostring(Workspace.CurrentCamera.Focus)..")"
+    getgenv().que_on_teleport([[
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/s3rvxnt/Washiez/refs/heads/main/Utils"))()
+        local CurrentVehicle = "]]..CurrentVehicle..[["
+        local CurrentVehicleCFrame = ]]..CurrentVehicleCFrame..[[
+        local CurrentVehicleOperatingStatus = ]]..CurrentVehicleOperatingStatus..[[
+        local CharacterCFrame = ]]..CharacterCFrame..[[
+        local LastAppropriateCFrame = ]]..LastAppropriateCFrame..[[
+        local WasDead = ]]..WasDead..[[
+        local CameraCFrame = ]]..CameraCFrame..[[
+        local CameraFocus = ]]..CameraFocus..[[
+        local Character = game:GetService("Players").LocalPlayer.Character or game:GetService("Players").LocalPlayer.CharacterAdded:Wait()
+        if CurrentVehicle ~= nil and CurrentVehicleOperatingStatus == true then
+            getgenv().WashiezRequestVehicleSpawn(CurrentVehicleCFrame.Position)
+            task.wait(game:GetService("Players").LocalPlayer:GetNetworkPing()*2)
+            getgenv().WashiezSpawnVehicle(CurrentVehicle)
+            repeat task.wait() until getgenv().WashiezGetVehicle() ~= nil
+            repeat
+                Character = game:GetService("Players").LocalPlayer.Character or game:GetService("Players").LocalPlayer.CharacterAdded:Wait()
+                getgenv().WashiezGetVehicle():WaitForChild("Chassis"):WaitForChild("VehicleSeat"):Sit(Character:WaitForChild("Humanoid"))
+                task.wait()
+            until getgenv().WashiezGetVehicle():WaitForChild("Chassis"):WaitForChild("VehicleSeat"):FindFirstChild("SeatWeld")
+	    getgenv().WaitForVehicleToLoad(getgenv().WashiezGetVehicle())
+	local function VehicleTween(Vehicle, TargetCFrame)
+    local TweenPart = Instance.new("Part")
+    TweenPart.Parent = game:GetService('Workspace')
+    TweenPart.Anchored = true
+    TweenPart.Transparency = 1
+    TweenPart.CanCollide = false
+    TweenPart.CFrame = Vehicle.PrimaryPart.CFrame
+
+    local Connections = getgenv().SuperStep(function()
+        Vehicle:PivotTo(TweenPart.CFrame)
+    end)
+
+    local Speed = (TweenPart.Position - TargetCFrame.Position).Magnitude * 0.0025
+    game:GetService("TweenService"):Create(
+        TweenPart,
+        TweenInfo.new(Speed, Enum.EasingStyle.Linear),
+        {CFrame = TargetCFrame}  -- Fixed: Replaced LastCFrame with TargetCFrame
+    ):Play()
+
+    task.wait(Speed)
+
+    for _, Connection in pairs(Connections) do
+        Connection:Disconnect()
+    end
+
+    TweenPart:Destroy()
+end
+            VehicleTween(getgenv().WashiezGetVehicle(),CurrentVehicleCFrame)
+        else
+            if WasDead == true then
+                CharacterCFrame = LastAppropriateCFrame
+            end
+            repeat task.wait() until game:GetService("Players").LocalPlayer.Character
+            repeat task.wait() until game:GetService("Players").LocalPlayer.Character.PrimaryPart
+            local orient = Instance.new("Part",game:GetService("Workspace"))
+            orient.CanCollide = false
+            orient.Transparency = 1
+            orient.Anchored = true
+            orient.CFrame = CharacterCFrame
+            local a = Instance.new("Attachment",game:GetService("Players").LocalPlayer.Character.PrimaryPart)
+            local b = Instance.new("Attachment",orient)
+            local c = Instance.new("AlignOrientation",game:GetService("Players").LocalPlayer.Character.PrimaryPart)
+            c.Attachment0=a
+            c.Attachment1=b
+            c.MaxTorque = math.huge
+            c.Responsiveness = 200
+            
+            local timeout = false
+            task.spawn(function()
+                task.wait(2)
+                timeout = true
+            end)
+            repeat 
+            task.wait()
+            game:GetService("Players").LocalPlayer.Character:MoveTo(orient.Position)
+            until (game:GetService("Players").LocalPlayer.Character.PrimaryPart.Position-orient.Position).magnitude <=2 or timeout == true
+            game:GetService("Workspace").CurrentCamera.CameraType = Enum.CameraType.Track
+            game:GetService("Workspace").CurrentCamera.CFrame = CameraCFrame
+            game:GetService("Workspace").CurrentCamera.Focus = CameraFocus
+            a:Destroy()
+            b:Destroy()
+            c:Destroy()
+            orient:Destroy()
+        end
+    ]])
+    repeat
+        task.wait(0.1)
+        pcall(function()
+            game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, LocalPlayer)
+        end)
+    until false
+end
