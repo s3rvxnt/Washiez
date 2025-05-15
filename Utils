@@ -70,31 +70,32 @@ getgenv().WashiezGetVehicle = function(target)
     return nil
 end
 
-getgenv().WashiezRequestVehicleSpawn = function()
+getgenv().WashiezRequestVehicleSpawn = function(fromPosition)
     local Character = Player.Character or Player.CharacterAdded:Wait()
-    repeat task.wait() until Character.PrimaryPart.CFrame
+    fromPosition = fromPosition or Character.PrimaryPart.Position
+    repeat task.wait() until Character.PrimaryPart
     local originalCFrame = Character.PrimaryPart.CFrame
     -- Find the closest Car Spawner
-    local furthestSpawner
-    local FurthestDistance = 0
+    local ClosestSpawner
+    local ClosestDistance = 9999999999999999999
     for _, child in Workspace:GetChildren() do
         if child.Name == "CarSpawner" then
-            local distance = (Character.PrimaryPart.Position - child.CarSpawner.Screen.Position).Magnitude
-            if distance > FurthestDistance then
-                furthestSpawner = child
-                FurthestDistance = distance
+            local distance = (fromPosition - child.CarSpawner.Screen.Position).Magnitude
+            if distance < ClosestDistance then
+                ClosestSpawner = child
+                ClosestDistance = distance
             end
         end
     end
     -- Teleport to the closest Car Spawner and activate the prompt
-    if furthestSpawner then
+    if ClosestSpawner then
         Character.Animate.Disabled = true
 
         local Connections = getgenv().SuperStep(function()
-            Character:PivotTo(furthestSpawner.CarSpawner.Screen.CFrame)
+            Character:PivotTo(ClosestSpawner.CarSpawner.Screen.CFrame)
             Character.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,0,0)
             Character.PrimaryPart.AssemblyAngularVelocity = Vector3.new(0,0,0)
-            fireproximityprompt(furthestSpawner.CarSpawner.Screen.CarSystem)
+            fireproximityprompt(ClosestSpawner.CarSpawner.Screen.CarSystem)
 	end)
         repeat task.wait() until Player.PlayerGui.CarSelection.MainFrame.Position ~= UDim2.new(1.2, 30, 0.5, 0)
         for _, connection in Connections do
@@ -105,6 +106,25 @@ getgenv().WashiezRequestVehicleSpawn = function()
         Character:PivotTo(originalCFrame)
     end
 end
+
+getgenv().VehicleTween = function(Vehicle,TargetCFrame)
+                    local TweenPart = Instance.new("Part")
+                    TweenPart.Parent = game:GetService('Workspace')
+                    TweenPart.Anchored = true
+                    TweenPart.Transparency = 0
+                    TweenPart.CanCollide = false
+                    TweenPart.CFrame = Vehicle.PrimaryPart.CFrame
+                    local Connections = getgenv().SuperStep(function()
+                        Vehicle:PivotTo(TweenPart.CFrame)
+                    end)
+                    local Speed = (TweenPart.Position-TargetCFrame.Position).Magnitude*0.0025
+                    game:GetService("TweenService"):Create(TweenPart, TweenInfo.new(Speed, Enum.EasingStyle.Linear), {CFrame = TargetCFrame}):Play()
+                    for _,Connection in Connections do
+                        Connection:Disconnect()
+                    end
+                    TweenPart:Destroy()
+			print("done")
+                end
 
 getgenv().WashiezSpawnVehicle = function(type)
 	local Original = getgenv().WashiezGetVehicle()
