@@ -107,24 +107,43 @@ getgenv().WashiezRequestVehicleSpawn = function(fromPosition)
     end
 end
 
-getgenv().VehicleTween = function(Vehicle,TargetCFrame)
-                    local TweenPart = Instance.new("Part")
-                    TweenPart.Parent = game:GetService('Workspace')
-                    TweenPart.Anchored = true
-                    TweenPart.Transparency = 0
-                    TweenPart.CanCollide = false
-                    TweenPart.CFrame = Vehicle.PrimaryPart.CFrame
-                    local Connections = getgenv().SuperStep(function()
-                        Vehicle:PivotTo(TweenPart.CFrame)
-                    end)
-                    local Speed = (TweenPart.Position-TargetCFrame.Position).Magnitude*0.0025
-                    game:GetService("TweenService"):Create(TweenPart, TweenInfo.new(Speed, Enum.EasingStyle.Linear), {CFrame = TargetCFrame}):Play()
-		    task.wait(Speed)
-                    for _,Connection in Connections do
-                        Connection:Disconnect()
-                    end
-                    TweenPart:Destroy()
-                end
+getgenv().IsTweeningCar = false
+getgenv().VehicleTween = function(Vehicle, TargetCFrame)
+    getgenv().IsTweeningCar = false
+    task.wait()
+    getgenv().IsTweeningCar = true
+    local TweenPart = Instance.new('Part')
+    TweenPart.Parent = game:GetService('Workspace')
+    TweenPart.Anchored = true
+    TweenPart.Transparency = 0
+    TweenPart.CanCollide = false
+    TweenPart.CFrame = Vehicle.PrimaryPart.CFrame
+    local Connections = getgenv().SuperStep(function()
+        Vehicle:PivotTo(TweenPart.CFrame)
+    end)
+    local Speed = (TweenPart.Position - TargetCFrame.Position).Magnitude
+        * 0.0025
+    game:GetService('TweenService')
+        :Create(
+            TweenPart,
+            TweenInfo.new(Speed, Enum.EasingStyle.Linear),
+            { CFrame = TargetCFrame }
+        )
+        :Play()
+
+    task.spawn(function()
+        task.wait(Speed)
+        getgenv().IsTweeningCar = false
+    end)
+    repeat
+        task.wait()
+    until getgenv().IsTweeningCar == false
+    for _, Connection in Connections do
+        Connection:Disconnect()
+    end
+    TweenPart:Destroy()
+end
+
 
 getgenv().WashiezSpawnVehicle = function(type)
 	local Original = getgenv().WashiezGetVehicle()
