@@ -119,6 +119,7 @@ getgenv().VehicleTween = function(Vehicle,TargetCFrame)
                     end)
                     local Speed = (TweenPart.Position-TargetCFrame.Position).Magnitude*0.0025
                     game:GetService("TweenService"):Create(TweenPart, TweenInfo.new(Speed, Enum.EasingStyle.Linear), {CFrame = TargetCFrame}):Play()
+		    task.wait(Speed)
                     for _,Connection in Connections do
                         Connection:Disconnect()
                     end
