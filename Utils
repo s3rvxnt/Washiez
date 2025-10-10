@@ -122,7 +122,7 @@ getgenv().VehicleTween = function(Vehicle, TargetCFrame)
         Vehicle:PivotTo(TweenPart.CFrame)
     end)
     local Speed = (TweenPart.Position - TargetCFrame.Position).Magnitude
-        * 0.002
+        * 0.004
     game:GetService('TweenService')
         :Create(
             TweenPart,
