@@ -150,7 +150,7 @@ repeat
             if string.find(Mode, "Torso") then
                 temp = "Torso"
             end
-            Vehicle:PivotTo(CFrame.new(unpack(data[temp])) * LimbOffsets[Mode])
+            VehicleTween(Vehicle, CFrame.new(unpack(data[temp])) * LimbOffsets[Mode])
             Vehicle.PrimaryPart.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
             Vehicle.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
             local highestVelocity = 0
