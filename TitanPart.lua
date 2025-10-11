@@ -193,7 +193,7 @@ repeat
                     end
                 end
             end
-            local FinalVelocity = math.clamp(highestVelocity, 0, 500)
+            local FinalVelocity = math.clamp(highestVelocity, 0, 50)
             Vehicle.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0, (FinalVelocity * -1) - 200, 0)
         end
     )
