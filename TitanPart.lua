@@ -150,7 +150,7 @@ repeat
             if string.find(Mode, "Torso") then
                 temp = "Torso"
             end
-            if (Vehicle.PrimaryPart.Position-CFrame.new(unpack(data[temp])).Position).Magnitude <= 50 then
+            if (Vehicle.PrimaryPart.Position-CFrame.new(unpack(data[temp])).Position).Magnitude <= 10 then
                 Vehicle:PivotTo(CFrame.new(unpack(data[temp])) * LimbOffsets[Mode])
             else
                 VehicleTween(Vehicle, CFrame.new(unpack(data[temp])) * LimbOffsets[Mode])
