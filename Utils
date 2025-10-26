@@ -89,7 +89,7 @@ getgenv().WashiezRequestVehicleSpawn = function(fromPosition)
     end
     -- Teleport to the closest Car Spawner and activate the prompt
     if ClosestSpawner then
-        Character:WaitForChild("Animate:).Disabled = true
+        Character:WaitForChild("Animate").Disabled = true
 
         local Connections = getgenv().SuperStep(function()
             Character:PivotTo(ClosestSpawner.CarSpawner.Screen.CFrame)
