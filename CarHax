@@ -48,14 +48,15 @@ local function hijack(TargetVehicle)
     Character:PivotTo(AlignPart.CFrame)
     local vibrate = -1
     local Connections = SuperStep(function()
-        vibrate = vibrate*-1
-        vibration = (TargetVehicle.PrimaryPart.AssemblyLinearVelocity.Magnitude*10)*vibrate
+        --vibrate = vibrate*-1
+        --vibration = (TargetVehicle.PrimaryPart.AssemblyLinearVelocity.Magnitude*10)*vibrate
         Character.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,0,0)
-        Character.PrimaryPart.AssemblyAngularVelocity = Vector3.new(0,vibration,0)
+        Character.PrimaryPart.AssemblyAngularVelocity = Vector3.new(0,0,0)
         Character:PivotTo(AlignPart.CFrame)
+        sethiddenproperty(Character.PrimaryPart, "PhysicsRepRootPart", TargetVehicle:WaitForChild("Chassis"):WaitForChild("VehicleSeat"))
         FakeSeat.CFrame = TargetVehicle:WaitForChild("Chassis"):WaitForChild("VehicleSeat").CFrame
         Character.PrimaryPart.AssemblyLinearVelocity = Vector3.new(0,0,0)
-        Character.PrimaryPart.AssemblyAngularVelocity = Vector3.new(0,vibration,0)
+        Character.PrimaryPart.AssemblyAngularVelocity = Vector3.new(0,0,0)
     end)
     TargetVehicle.AncestryChanged:Connect(function()
         AlignPart:Destroy()
